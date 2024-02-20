@@ -6,7 +6,7 @@ namespace VolunteersClub.Models
     public class UserType
     {
         [Key]
-        public int UserTypeID {  get; set; }
-        public string UserName { get; set; }
+        public int TypeID {  get; set; }
+        public string Type { get; set; }
     }
 }

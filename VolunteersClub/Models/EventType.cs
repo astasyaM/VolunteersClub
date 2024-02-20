@@ -6,6 +6,7 @@ namespace VolunteersClub.Models
     {
         [Key]
         public int EventTypeID { get; set; }
-        public string EventName { get; set; }
+        public string EventTypeName { get; set; }
+        public string Image {  get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using VolunteersClub.Data.Enum;
 using System.ComponentModel.DataAnnotations;
 
 namespace VolunteersClub.Models
@@ -15,8 +14,10 @@ namespace VolunteersClub.Models
         public string Surname {  get; set; }
         public DateTime BirthDate {  get; set; }
         [ForeignKey("EventTypeID")]
-        public int EventTypeID { get; set; }
+        public int ActivityAreaID { get; set; }
         [ForeignKey("VolunteerStatusID")]
-        public int VolunteerStatusID {  get; set; }
+        public int StatusID {  get; set; }
+        public string VK {  get; set; }
+        public string Telegram {  get; set; }
     }
 }

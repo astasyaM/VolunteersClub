@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using VolunteersClub.Data.Enum;
 
 namespace VolunteersClub.Models
 {
@@ -14,7 +13,7 @@ namespace VolunteersClub.Models
         public int VolunteerID { get; set; }
         [ForeignKey("ResponsibilityID")]
         public int ResponsibilityID { get; set; }
-        public bool VolunteerConfirmed { get; set; }
-        public bool LeaderConfirmed { get; set; }
+        public bool ConfirmedVolunteer { get; set; }
+        public bool ConfirmedLeader { get; set; }
     }
 }

@@ -10,22 +10,22 @@ using VolunteersClub.Models;
 
 namespace VolunteersClub.Controllers
 {
-    public class ResponsibilitiesController : Controller
+    public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ResponsibilitiesController(ApplicationDbContext context)
+        public EventsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Responsibilities
+        // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Responsibilities.ToListAsync());
+            return View(await _context.Events.ToListAsync());
         }
 
-        // GET: Responsibilities/Details/5
+        // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,47 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities
-                .FirstOrDefaultAsync(m => m.ResponsibilityID == id);
-            if (responsibility == null)
+            var @event = await _context.Events
+                .FirstOrDefaultAsync(m => m.EventID == id);
+            if (@event == null)
             {
                 return NotFound();
             }
 
-            return View(responsibility);
+            return View(@event);
         }
 
-        // GET: Responsibilities/Create
+        // GET: Events/Create
         public IActionResult Create()
         {
+            ViewBag.EventTypes = GetEventTypeSelectList();
             return View();
         }
 
-        // POST: Responsibilities/Create
+        public IEnumerable<SelectListItem> GetEventTypeSelectList()
+        {
+            return _context.EventTypes
+                .Select(e => new SelectListItem { Value = e.EventTypeID.ToString(), Text = e.EventTypeName })
+                .ToList();
+        }
+
+        // POST: Events/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ResponsibilityID,ResponsibilityName")] Responsibility responsibility)
+        public async Task<IActionResult> Create([Bind("EventID,EventName,EventDate,StartTime,Duration,VolunteersNumber,EventTypeID,Adress,EventDescription,Image")] Event @event)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(responsibility);
+                _context.Add(@event);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(responsibility);
+            return View(@event);
         }
 
-        // GET: Responsibilities/Edit/5
+        // GET: Events/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +81,23 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities.FindAsync(id);
-            if (responsibility == null)
+            var @event = await _context.Events.FindAsync(id);
+            if (@event == null)
             {
                 return NotFound();
             }
-            return View(responsibility);
+            ViewBag.EventTypes = GetEventTypeSelectList();
+            return View(@event);
         }
 
-        // POST: Responsibilities/Edit/5
+        // POST: Events/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ResponsibilityID,ResponsibilityName")] Responsibility responsibility)
+        public async Task<IActionResult> Edit(int id, [Bind("EventID,EventName,EventDate,StartTime,Duration,VolunteersNumber,EventTypeID,Adress,EventDescription,Image")] Event @event)
         {
-            if (id != responsibility.ResponsibilityID)
+            if (id != @event.EventID)
             {
                 return NotFound();
             }
@@ -97,12 +106,12 @@ namespace VolunteersClub.Controllers
             {
                 try
                 {
-                    _context.Update(responsibility);
+                    _context.Update(@event);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ResponsibilityExists(responsibility.ResponsibilityID))
+                    if (!EventExists(@event.EventID))
                     {
                         return NotFound();
                     }
@@ -113,10 +122,10 @@ namespace VolunteersClub.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(responsibility);
+            return View(@event);
         }
 
-        // GET: Responsibilities/Delete/5
+        // GET: Events/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +133,34 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities
-                .FirstOrDefaultAsync(m => m.ResponsibilityID == id);
-            if (responsibility == null)
+            var @event = await _context.Events
+                .FirstOrDefaultAsync(m => m.EventID == id);
+            if (@event == null)
             {
                 return NotFound();
             }
 
-            return View(responsibility);
+            return View(@event);
         }
 
-        // POST: Responsibilities/Delete/5
+        // POST: Events/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var responsibility = await _context.Responsibilities.FindAsync(id);
-            if (responsibility != null)
+            var @event = await _context.Events.FindAsync(id);
+            if (@event != null)
             {
-                _context.Responsibilities.Remove(responsibility);
+                _context.Events.Remove(@event);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResponsibilityExists(int id)
+        private bool EventExists(int id)
         {
-            return _context.Responsibilities.Any(e => e.ResponsibilityID == id);
+            return _context.Events.Any(e => e.EventID == id);
         }
     }
 }

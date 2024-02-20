@@ -10,22 +10,22 @@ using VolunteersClub.Models;
 
 namespace VolunteersClub.Controllers
 {
-    public class ResponsibilitiesController : Controller
+    public class EventTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ResponsibilitiesController(ApplicationDbContext context)
+        public EventTypesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Responsibilities
+        // GET: EventTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Responsibilities.ToListAsync());
+            return View(await _context.EventTypes.ToListAsync());
         }
 
-        // GET: Responsibilities/Details/5
+        // GET: EventTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities
-                .FirstOrDefaultAsync(m => m.ResponsibilityID == id);
-            if (responsibility == null)
+            var eventType = await _context.EventTypes
+                .FirstOrDefaultAsync(m => m.EventTypeID == id);
+            if (eventType == null)
             {
                 return NotFound();
             }
 
-            return View(responsibility);
+            return View(eventType);
         }
 
-        // GET: Responsibilities/Create
+        // GET: EventTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Responsibilities/Create
+        // POST: EventTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ResponsibilityID,ResponsibilityName")] Responsibility responsibility)
+        public async Task<IActionResult> Create([Bind("EventTypeID,EventName,Image")] EventType eventType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(responsibility);
+                _context.Add(eventType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(responsibility);
+            return View(eventType);
         }
 
-        // GET: Responsibilities/Edit/5
+        // GET: EventTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities.FindAsync(id);
-            if (responsibility == null)
+            var eventType = await _context.EventTypes.FindAsync(id);
+            if (eventType == null)
             {
                 return NotFound();
             }
-            return View(responsibility);
+            return View(eventType);
         }
 
-        // POST: Responsibilities/Edit/5
+        // POST: EventTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ResponsibilityID,ResponsibilityName")] Responsibility responsibility)
+        public async Task<IActionResult> Edit(int id, [Bind("EventTypeID,EventName,Image")] EventType eventType)
         {
-            if (id != responsibility.ResponsibilityID)
+            if (id != eventType.EventTypeID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace VolunteersClub.Controllers
             {
                 try
                 {
-                    _context.Update(responsibility);
+                    _context.Update(eventType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ResponsibilityExists(responsibility.ResponsibilityID))
+                    if (!EventTypeExists(eventType.EventTypeID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace VolunteersClub.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(responsibility);
+            return View(eventType);
         }
 
-        // GET: Responsibilities/Delete/5
+        // GET: EventTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities
-                .FirstOrDefaultAsync(m => m.ResponsibilityID == id);
-            if (responsibility == null)
+            var eventType = await _context.EventTypes
+                .FirstOrDefaultAsync(m => m.EventTypeID == id);
+            if (eventType == null)
             {
                 return NotFound();
             }
 
-            return View(responsibility);
+            return View(eventType);
         }
 
-        // POST: Responsibilities/Delete/5
+        // POST: EventTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var responsibility = await _context.Responsibilities.FindAsync(id);
-            if (responsibility != null)
+            var eventType = await _context.EventTypes.FindAsync(id);
+            if (eventType != null)
             {
-                _context.Responsibilities.Remove(responsibility);
+                _context.EventTypes.Remove(eventType);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResponsibilityExists(int id)
+        private bool EventTypeExists(int id)
         {
-            return _context.Responsibilities.Any(e => e.ResponsibilityID == id);
+            return _context.EventTypes.Any(e => e.EventTypeID == id);
         }
     }
 }

@@ -10,22 +10,22 @@ using VolunteersClub.Models;
 
 namespace VolunteersClub.Controllers
 {
-    public class ResponsibilitiesController : Controller
+    public class VolunteersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ResponsibilitiesController(ApplicationDbContext context)
+        public VolunteersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Responsibilities
+        // GET: Volunteers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Responsibilities.ToListAsync());
+            return View(await _context.Volunteers.ToListAsync());
         }
 
-        // GET: Responsibilities/Details/5
+        // GET: Volunteers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities
-                .FirstOrDefaultAsync(m => m.ResponsibilityID == id);
-            if (responsibility == null)
+            var volunteer = await _context.Volunteers
+                .FirstOrDefaultAsync(m => m.VolunteerID == id);
+            if (volunteer == null)
             {
                 return NotFound();
             }
 
-            return View(responsibility);
+            return View(volunteer);
         }
 
-        // GET: Responsibilities/Create
+        // GET: Volunteers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Responsibilities/Create
+        // POST: Volunteers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ResponsibilityID,ResponsibilityName")] Responsibility responsibility)
+        public async Task<IActionResult> Create([Bind("VolunteerID,UserID,Name,Patronymic,Surname,BirthDate,EventTypeID,VolunteerStatusID,VK,Telegram")] Volunteer volunteer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(responsibility);
+                _context.Add(volunteer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(responsibility);
+            return View(volunteer);
         }
 
-        // GET: Responsibilities/Edit/5
+        // GET: Volunteers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities.FindAsync(id);
-            if (responsibility == null)
+            var volunteer = await _context.Volunteers.FindAsync(id);
+            if (volunteer == null)
             {
                 return NotFound();
             }
-            return View(responsibility);
+            return View(volunteer);
         }
 
-        // POST: Responsibilities/Edit/5
+        // POST: Volunteers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ResponsibilityID,ResponsibilityName")] Responsibility responsibility)
+        public async Task<IActionResult> Edit(int id, [Bind("VolunteerID,UserID,Name,Patronymic,Surname,BirthDate,EventTypeID,VolunteerStatusID,VK,Telegram")] Volunteer volunteer)
         {
-            if (id != responsibility.ResponsibilityID)
+            if (id != volunteer.VolunteerID)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace VolunteersClub.Controllers
             {
                 try
                 {
-                    _context.Update(responsibility);
+                    _context.Update(volunteer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ResponsibilityExists(responsibility.ResponsibilityID))
+                    if (!VolunteerExists(volunteer.VolunteerID))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace VolunteersClub.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(responsibility);
+            return View(volunteer);
         }
 
-        // GET: Responsibilities/Delete/5
+        // GET: Volunteers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var responsibility = await _context.Responsibilities
-                .FirstOrDefaultAsync(m => m.ResponsibilityID == id);
-            if (responsibility == null)
+            var volunteer = await _context.Volunteers
+                .FirstOrDefaultAsync(m => m.VolunteerID == id);
+            if (volunteer == null)
             {
                 return NotFound();
             }
 
-            return View(responsibility);
+            return View(volunteer);
         }
 
-        // POST: Responsibilities/Delete/5
+        // POST: Volunteers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var responsibility = await _context.Responsibilities.FindAsync(id);
-            if (responsibility != null)
+            var volunteer = await _context.Volunteers.FindAsync(id);
+            if (volunteer != null)
             {
-                _context.Responsibilities.Remove(responsibility);
+                _context.Volunteers.Remove(volunteer);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResponsibilityExists(int id)
+        private bool VolunteerExists(int id)
         {
-            return _context.Responsibilities.Any(e => e.ResponsibilityID == id);
+            return _context.Volunteers.Any(e => e.VolunteerID == id);
         }
     }
 }

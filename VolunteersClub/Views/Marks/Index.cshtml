@@ -1,0 +1,47 @@
+﻿@model IEnumerable<VolunteersClub.Models.Mark>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityRecordID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityRecordID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurrentMark)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MarkID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MarkID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MarkID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

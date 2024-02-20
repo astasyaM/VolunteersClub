@@ -10,6 +10,6 @@ namespace VolunteersClub.Models
         [ForeignKey("RecordID")]
         public int ActivityRecordID { get; set; }
         public int CurrentMark {  get; set; }
-        public string Note {  get; set; }
+        public string Notes {  get; set; }
     }
 }

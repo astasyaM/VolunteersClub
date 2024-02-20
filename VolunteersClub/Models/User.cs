@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using VolunteersClub.Data.Enum;
 
 namespace VolunteersClub.Models
 {

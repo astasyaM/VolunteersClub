@@ -5,7 +5,7 @@ namespace VolunteersClub.Models
     public class VolunteerStatus
     {
         [Key]
-        public int VolunteerStatusID {  get; set; }
-        public string VolunteerStatusName { get; set;  }
+        public int StatusID {  get; set; }
+        public string Status { get; set;  }
     }
 }
