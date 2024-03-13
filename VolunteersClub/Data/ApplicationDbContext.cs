@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using VolunteersClub.Models;
 
 namespace VolunteersClub.Data
@@ -12,6 +13,7 @@ namespace VolunteersClub.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
         }
 
         public DbSet<Event> Events {  get; set; }

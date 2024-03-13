@@ -1,72 +1,73 @@
 ﻿@model VolunteersClub.Models.Event
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Event</h4>
+<h1 class="text-center">Детали мероприятия</h1>
+<h4 class="text-center">@Model.EventName</h4>
+<div class="mx-auto mb-4">
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventName)
+        <dt class="col-sm-3 text-right">
+            Название
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.EventName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventDate)
+        <dt class="col-sm-3 text-right">
+            Дата
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.EventDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
+        <dt class="col-sm-3 text-right">
+            Время начала
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
+        <dd class="col-sm-9">
+            @Model.StartTime.ToString(@"hh\:mm")
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
+
+        <dt class="col-sm-3 text-right">
+            Продолжительность
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Duration)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.VolunteersNumber)
+        <dt class="col-sm-3 text-right">
+            Кол-во волонтёров
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.VolunteersNumber)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventTypeID)
+        <dt class="col-sm-3 text-right">
+            Тип мероприятия
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EventTypeID)
+        <dd class="col-sm-9">
+            @ViewBag.EventTypeName
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Adress)
+        <dt class="col-sm-3 text-right">
+            Адрес
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Adress)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EventDescription)
+        <dt class="col-sm-3 text-right">
+            Описание
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.EventDescription)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
+        <dt class="col-sm-3 text-right">
+            Баннер
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
+        <dd class="col-sm-9">
+            <img src="@Html.DisplayFor(model => model.Image)" alt="Event Image" class="img-fluid">
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.EventID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="text-center">
+    <a asp-action="Edit" asp-route-id="@Model?.EventID" class="btn btn-primary">Редактировать</a> |
+    <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
 </div>
+

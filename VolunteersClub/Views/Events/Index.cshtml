@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<VolunteersClub.Models.Event>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Мероприятия Волонтёрского центра НИУ ВШЭ-Пермь";
 }
 
-<h1>Index</h1>
+<h1>Мероприятия Волонтёрского центра НИУ ВШЭ-Пермь</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
+<p class="text-center">
+    <a asp-action="Create" class="btn btn-success">Создать новое</a>
 </p>
 
 <div class="row">
@@ -15,17 +15,23 @@
     {
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="@item.Image" class="card-img-top" alt="Event Image">
+                    <img src="@item.Image" class="card-img-top mx-auto mt-3" alt="Event Image" style="max-width: 75%;">
                     <div class="card-body">
                         <h5 class="card-title font-weight-bold">@item.EventName</h5>
                         <p class="card-text">@item.EventDescription</p>
-                        <div class="btn-group" role="group" aria-label="Event Actions">
-                            <a asp-action="Edit" asp-route-id="@item.EventID" class="btn btn-primary">Edit</a>
-                            <a asp-action="Details" asp-route-id="@item.EventID" class="btn btn-info">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.EventID" class="btn btn-danger">Delete</a>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group d-flex justify-content-between" role="group" aria-label="Event Actions">
+                            <a asp-action="Edit" asp-route-id="@item.EventID" class="btn btn-primary">Редактировать</a>
+                            <a asp-action="Details" asp-route-id="@item.EventID" class="btn btn-info">Подробнее</a>
+                            <a asp-action="Delete" asp-route-id="@item.EventID" class="btn btn-danger">Удалить</a>
+                        </div>
+                        <div class="text-center mt-2">
+                            <a asp-action="TeamFormation" asp-route-id="@item.EventID" class="btn btn-secondary">Формирование команды</a>
                         </div>
                     </div>
                 </div>
             </div>
     }
 </div>
+

@@ -27,16 +27,22 @@
                 <input asp-for="ResponsibilityID" class="form-control" />
                 <span asp-validation-for="ResponsibilityID" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ConfirmedVolunteer" /> @Html.DisplayNameFor(model => model.ConfirmedVolunteer)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ConfirmedLeader" /> @Html.DisplayNameFor(model => model.ConfirmedLeader)
-                </label>
-            </div>
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="ConfirmedVolunteer" /> @Html.DisplayNameFor(model => model.ConfirmedVolunteer)
+    </label>
+</div>
+
+<div class="form-group form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" asp-for="ConfirmedLeader" /> @Html.DisplayNameFor(model => model.ConfirmedLeader)
+    </label>
+</div>
+
+
+
+
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

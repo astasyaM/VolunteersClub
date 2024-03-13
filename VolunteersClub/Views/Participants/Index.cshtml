@@ -1,59 +1,160 @@
 ﻿@model IEnumerable<VolunteersClub.Models.Participant>
 
-@{
-    ViewData["Title"] = "Index";
-}
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<h1>Index</h1>
+<style>
+    .slider-container {
+        overflow: hidden;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EventID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VolunteerID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ResponsibilityID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConfirmedVolunteer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConfirmedLeader)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VolunteerID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ResponsibilityID)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.ConfirmedVolunteer)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.ConfirmedLeader)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RecordID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RecordID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RecordID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .slider {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .card {
+        min-width: 33.33%;
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+
+    .slider-btn {
+        cursor: pointer;
+        user-select: none;
+        padding: 10px;
+    }
+        .card img {
+        display: block; /* Устанавливаем изображение как блочный элемент */
+        margin: 0 auto; /* Устанавливаем автоматичесные отступы по горизонтали для центрирования */
+    }
+</style>
+
+<script>
+    function shiftSlider(container, direction) {
+        const slider = container.querySelector('.slider');
+        const cardWidth = container.querySelector('.card').offsetWidth;
+        const shiftValue = direction === 'next' ? -cardWidth : cardWidth;
+
+        slider.style.transform = `translateX(${shiftValue}px)`;
+
+        setTimeout(() => {
+            if (direction === 'next') {
+                slider.appendChild(slider.firstElementChild);
+            } else {
+                slider.prepend(slider.lastElementChild);
+            }
+            slider.style.transition = 'none';
+            slider.style.transform = 'translateX(0)';
+            setTimeout(() => {
+                slider.style.transition = 'transform 0.5s ease-in-out';
+            });
+        }, 500);
+    }
+</script>
+
+<div class="slider-container">
+    <h2>Confirmed Volunteers</h2>
+    <div class="slider">
+        @foreach (var volunteer in ViewBag.ConfirmedVolunteers)
+        {
+                <div class="card">
+                    <img src="https://i.imgur.com/dDXo1td.png" height = "200px" width = "200px" alt="Изображение">
+                    <p>@volunteer.Surname</p>
+                    <p>@volunteer.Name</p>
+                    <p>@volunteer.Patronymic</p>
+                    <p>@volunteer.Status</p>
+                    <p>@volunteer.BirthDate.ToShortDateString()</p>
+                    <p>@volunteer.VK</p>
+                    <p>@volunteer.Telegram</p>
+                        <button class="approve-btn" data-participant-id="@volunteer.RecordID">Approve Request</button>
+                </div>
+        }
+    </div>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Previous</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Next</button>
+</div>
+
+<div class="slider-container">
+    <h2>Confirmed Leader</h2>
+    <div class="slider">
+        @foreach (var volunteer in ViewBag.ConfirmedLeader)
+        {
+                    <div class="card">
+                            <img src="https://i.imgur.com/OesGVzD.png" height = "200px" width = "200px" alt="Изображение">
+                        <p>@volunteer.Surname</p>
+                        <p>@volunteer.Name</p>
+                        <p>@volunteer.Patronymic</p>
+                            <p>@volunteer.Status</p>
+                        <p>@volunteer.BirthDate.ToShortDateString()</p>
+                        <p>@volunteer.VK</p>
+                        <p>@volunteer.Telegram</p>
+                    </div>
+        }
+    </div>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Previous</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Next</button>
+</div>
+
+<div class="slider-container">
+    <h2>Confirmed Both</h2>
+    <div class="slider">
+        @foreach (var volunteer in ViewBag.ConfirmedBoth)
+        {
+                        <div class="card">
+                                <img src="https://i.imgur.com/OesGVzD.png" height = "200px" width = "200px" alt="Изображение">
+                            <p>@volunteer.Surname</p>
+                            <p>@volunteer.Name</p>
+                            <p>@volunteer.Patronymic</p>
+                                <p>@volunteer.Status</p>
+                            <p>@volunteer.BirthDate.ToShortDateString()</p>
+                            <p>@volunteer.VK</p>
+                            <p>@volunteer.Telegram</p>
+                        </div>
+        }
+    </div>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Previous</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Next</button>
+</div>
+
+<div class="slider-container">
+    <h2>Non-Participants</h2>
+    <div class="slider">
+        @foreach (var volunteer in ViewBag.NonParticipants)
+        {
+                <div class="card">
+                                <img src="https://i.imgur.com/1t1xNbG.png" height = "200px" width = "200px" alt="Изображение">
+                                    <p>@volunteer.Surname</p>
+                                    <p>@volunteer.Name</p>
+                                    <p>@volunteer.Patronymic</p>
+                                        <p>@volunteer.Status</p>
+                                    <p>@volunteer.BirthDate.ToShortDateString()</p>
+                                    <p>@volunteer.VK</p>
+                                    <p>@volunteer.Telegram</p>
+                </div>
+        }
+    </div>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Previous</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Next</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Обработчик клика по кнопке "Одобрить заявку"
+        $('.approve-btn').click(function () {
+            var participantId = $(this).data('participant-id');
+
+            // Отправляем AJAX-запрос на сервер для одобрения заявки
+            $.post('/Participants/ApproveRequest', { participantId: participantId }, function (result) {
+                if (result.success) {
+                    // Обновляем содержимое слайдера
+                    // Можно выполнить перезагрузку страницы или другие действия по вашему выбору
+                    location.reload();
+                } else {
+                    // Обработка ошибки
+                    alert('Error: ' + result.error);
+                }
+            });
+        });
+    });
+</script>

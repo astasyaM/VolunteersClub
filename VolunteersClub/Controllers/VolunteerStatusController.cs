@@ -34,7 +34,7 @@ namespace VolunteersClub.Controllers
             }
 
             var volunteerStatus = await _context.VolunteerStatuses
-                .FirstOrDefaultAsync(m => m.StatusID == id);
+                .FirstOrDefaultAsync(m => m.VolunteerStatusID == id);
             if (volunteerStatus == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace VolunteersClub.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("VolunteerStatusID,VolunteerStatusName")] VolunteerStatus volunteerStatus)
         {
-            if (id != volunteerStatus.StatusID)
+            if (id != volunteerStatus.VolunteerStatusID)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace VolunteersClub.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VolunteerStatusExists(volunteerStatus.StatusID))
+                    if (!VolunteerStatusExists(volunteerStatus.VolunteerStatusID))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace VolunteersClub.Controllers
             }
 
             var volunteerStatus = await _context.VolunteerStatuses
-                .FirstOrDefaultAsync(m => m.StatusID == id);
+                .FirstOrDefaultAsync(m => m.VolunteerStatusID == id);
             if (volunteerStatus == null)
             {
                 return NotFound();
@@ -151,7 +151,7 @@ namespace VolunteersClub.Controllers
 
         private bool VolunteerStatusExists(int id)
         {
-            return _context.VolunteerStatuses.Any(e => e.StatusID == id);
+            return _context.VolunteerStatuses.Any(e => e.VolunteerStatusID == id);
         }
     }
 }

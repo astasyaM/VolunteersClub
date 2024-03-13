@@ -12,6 +12,6 @@ namespace VolunteersClub.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Patronymic { get; set; }
-        public DateTime BirthDate {  get; set; }
+        public DateOnly BirthDate {  get; set; }
     }
 }

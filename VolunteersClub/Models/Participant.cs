@@ -11,6 +11,7 @@ namespace VolunteersClub.Models
         public int EventID { get; set; }
         [ForeignKey("VolunteerID")]
         public int VolunteerID { get; set; }
+        public virtual Volunteer Volunteer { get; set; }
         [ForeignKey("ResponsibilityID")]
         public int ResponsibilityID { get; set; }
         public bool ConfirmedVolunteer { get; set; }

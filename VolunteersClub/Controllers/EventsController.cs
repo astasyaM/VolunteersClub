@@ -39,7 +39,7 @@ namespace VolunteersClub.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.EventTypeName = GetEventTypeName(@event.EventTypeID);
             return View(@event);
         }
 
@@ -55,6 +55,12 @@ namespace VolunteersClub.Controllers
             return _context.EventTypes
                 .Select(e => new SelectListItem { Value = e.EventTypeID.ToString(), Text = e.EventTypeName })
                 .ToList();
+        }
+
+        public string GetEventTypeName(int eventTypeId)
+        {
+            var eventType = _context.EventTypes.Find(eventTypeId);
+            return eventType?.EventTypeName;
         }
 
         // POST: Events/Create
@@ -139,7 +145,7 @@ namespace VolunteersClub.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.EventTypeName = GetEventTypeName(@event.EventTypeID);
             return View(@event);
         }
 

@@ -12,11 +12,12 @@ namespace VolunteersClub.Models
         public string Name {  get; set; }
         public string Patronymic { get; set; }
         public string Surname {  get; set; }
-        public DateTime BirthDate {  get; set; }
+        public DateOnly BirthDate {  get; set; }
         [ForeignKey("EventTypeID")]
-        public int ActivityAreaID { get; set; }
+        public int EventTypeID { get; set; }
         [ForeignKey("VolunteerStatusID")]
-        public int StatusID {  get; set; }
+        public int VolunteerStatusID {  get; set; }
+        public virtual VolunteerStatus VolunteerStatus { get; set; }
         public string VK {  get; set; }
         public string Telegram {  get; set; }
     }
