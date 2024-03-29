@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using VolunteersClub.Data;
 
 namespace VolunteersClub.Models
 {
-    public class UserType
+    public class UserType 
     {
         [Key]
         public int TypeID {  get; set; }

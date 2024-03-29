@@ -1,35 +1,75 @@
 ﻿@model IEnumerable<VolunteersClub.Models.UserType>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Выберите роль для регистрации";
 }
 
-<h1>Index</h1>
+<style>
+    .vertical-center {
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .role-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TypeID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TypeID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TypeID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .role-content img {
+        max-width: 27%; /* Ограничение ширины изображения */
+        height: auto; /* Автоматическая высота */
+        margin-bottom: 0px; /* Отступ между изображением и текстом */
+        
+    }
+
+    .role-btn {
+        width: 600px; /* Ширина кнопки */
+        height: 200px; /* Высота кнопки */
+        margin: 10px; /* Отступ */
+        background-size: cover; /* Размер изображения */
+        background-color: #7f8cd4;
+        color: #030a33; /* Цвет текста */
+        font-size: 24px; /* Размер шрифта */
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+    }
+
+    .role-btn:hover {
+        opacity: 0.8;
+    }
+</style>
+
+
+<div class="container">
+    <div class="vertical-center">
+        <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+<button class="role-btn" onclick="location.href='@Url.Action("Create", "Leaders")'">
+    <div class="role-content">
+        <img src="https://i.imgur.com/UwTNiRd.png" alt="Руководитель">
+        <div>Руководитель</div>
+    </div>
+</button>
+
+<button class="role-btn" onclick="location.href='@Url.Action("Create", "Volunteers")'">
+    <div class="role-content">
+        <img src="https://i.imgur.com/wJuXnOW.png" alt="Волонтёр">
+        <div>Волонтёр</div>
+    </div>
+</button>
+
+
+
+        <div class="mt-3">
+            <a class="btn btn-secondary" href="@Url.Action("Index", "Home")">Назад</a>
+        </div>
+    </div>
+</div>

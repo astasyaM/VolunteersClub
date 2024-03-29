@@ -1,10 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 using VolunteersClub.Models;
 
 namespace VolunteersClub.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationUser : IdentityUser
+    {
+        public string FirstName { get; set; } 
+        public string LastName { get; set; } 
+        public DateTime BirthDate { get; set; } 
+        public bool IsLeader { get; set; } 
+    }
+
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
