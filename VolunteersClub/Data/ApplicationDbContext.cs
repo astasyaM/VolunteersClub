@@ -6,13 +6,7 @@ using VolunteersClub.Models;
 
 namespace VolunteersClub.Data
 {
-    public class ApplicationUser : IdentityUser
-    {
-        public string FirstName { get; set; } 
-        public string LastName { get; set; } 
-        public DateTime BirthDate { get; set; } 
-        public bool IsLeader { get; set; } 
-    }
+
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -23,6 +17,11 @@ namespace VolunteersClub.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<IdentityUser>(entity =>
+            {
+                entity.ToTable(name: "User");
+            });
 
         }
 

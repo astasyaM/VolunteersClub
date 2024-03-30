@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace VolunteersClub.Controllers
     public class LeadersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LeadersController(ApplicationDbContext context)
+        public LeadersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Leaders
@@ -54,15 +57,35 @@ namespace VolunteersClub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LeaderID,UserID,Name,Surname,Patronymic,BirthDate")] Leader leader)
+        public async Task<IActionResult> Create(RegistrationLeader model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(leader);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                Leader leader = new Leader
+                {
+                    UserID = Int32.Parse(user.Id),
+                    Name = model.Name,
+                    Patronymic = model.Patronymic,
+                    Surname = model.Surname,
+                    BirthDate = model.BirthDate
+                };
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "Leader");
+                    _context.Add(leader);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
-            return View(leader);
+            return View(model);
         }
 
         // GET: Leaders/Edit/5

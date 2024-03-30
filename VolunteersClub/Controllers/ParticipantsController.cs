@@ -48,7 +48,7 @@ namespace VolunteersClub.Controllers
                     Surname = p.Volunteer.Surname,
                     Name = p.Volunteer.Name,
                     Patronymic = p.Volunteer.Patronymic,
-                    Status = p.Volunteer.VolunteerStatus.Status,
+                    Status = "",
                     BirthDate = p.Volunteer.BirthDate,
                     VK = p.Volunteer.VK,
                     Telegram = p.Volunteer.Telegram
@@ -68,7 +68,7 @@ namespace VolunteersClub.Controllers
                     Surname = p.Volunteer.Surname,
                     Name = p.Volunteer.Name,
                     Patronymic = p.Volunteer.Patronymic,
-                    Status = p.Volunteer.VolunteerStatus.Status,
+                    Status = "",
                     BirthDate = p.Volunteer.BirthDate,
                     VK = p.Volunteer.VK,
                     Telegram = p.Volunteer.Telegram
@@ -88,7 +88,7 @@ namespace VolunteersClub.Controllers
                     Surname = p.Volunteer.Surname,
                     Name = p.Volunteer.Name,
                     Patronymic = p.Volunteer.Patronymic,
-                    Status = p.Volunteer.VolunteerStatus.Status,
+                    Status = "",
                     BirthDate = p.Volunteer.BirthDate,
                     VK = p.Volunteer.VK,
                     Telegram = p.Volunteer.Telegram
@@ -99,14 +99,14 @@ namespace VolunteersClub.Controllers
             ViewBag.ConfirmedBoth = confirmedBoth;
             var nonParticipants = _context.Volunteers
                 .Where(v => !_context.Participants.Any(p => p.VolunteerID == v.VolunteerID))
-                .Include(v => v.VolunteerStatus)  // Включаем данные о статусе волонтёра
+                .Include(v => "")  // Включаем данные о статусе волонтёра
                 .Select(v => new ConfirmedVolunteerViewModel
                 {
                     VolunteerId = v.VolunteerID,
                     Surname = v.Surname,
                     Name = v.Name,
                     Patronymic = v.Patronymic,
-                    Status = v.VolunteerStatus.Status,
+                    Status = "",
                     BirthDate = v.BirthDate,
                     VK = v.VK,
                     Telegram = v.Telegram

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace VolunteersClub.Controllers
     public class VolunteersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public VolunteersController(ApplicationDbContext context)
+        public VolunteersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Volunteers
@@ -54,15 +57,40 @@ namespace VolunteersClub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VolunteerID,UserID,Name,Patronymic,Surname,BirthDate,EventTypeID,VolunteerStatusID,VK,Telegram")] Volunteer volunteer)
+        public async Task<IActionResult> Create(RegistrationVolunteer model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(volunteer);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                Volunteer volunteer = new Volunteer
+                {
+                    UserID = Int32.Parse(user.Id),
+                    Name = model.Name,
+                    Patronymic = model.Patronymic,
+                    Surname = model.Surname,
+                    BirthDate = model.BirthDate,
+                    EventTypeID = model.EventTypeID,
+                    Telegram = model.Telegram,
+                    VK = model.VK,
+                    VolunteerStatusID = model.VolunteerStatusID
+                };
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "Volunteer");
+                    _context.Add(volunteer);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
             }
-            return View(volunteer);
+            return View(model);
         }
 
         // GET: Volunteers/Edit/5
