@@ -58,7 +58,6 @@ namespace VolunteersClub.Models
         public int EventTypeID { get; set; }
         [Required]
         public int VolunteerStatusID { get; set; }
-        public virtual VolunteerStatus VolunteerStatus { get; set; }
         public string VK { get; set; }
         public string Telegram { get; set; }
     }

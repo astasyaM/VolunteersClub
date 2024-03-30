@@ -66,7 +66,7 @@ namespace VolunteersClub.Controllers
 
                 Leader leader = new Leader
                 {
-                    UserID = Int32.Parse(user.Id),
+                    UserID = user.Id,
                     Name = model.Name,
                     Patronymic = model.Patronymic,
                     Surname = model.Surname,

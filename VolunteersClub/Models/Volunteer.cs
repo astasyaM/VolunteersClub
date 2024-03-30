@@ -8,7 +8,7 @@ namespace VolunteersClub.Models
         [Key]
         public int VolunteerID { get; set; }
         [ForeignKey("UserID")]
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public string Name {  get; set; }
         public string Patronymic { get; set; }
         public string Surname {  get; set; }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MySqlX.XDevAPI.Common;
 using VolunteersClub.Data;
 using VolunteersClub.Models;
 
@@ -66,7 +67,7 @@ namespace VolunteersClub.Controllers
 
                 Volunteer volunteer = new Volunteer
                 {
-                    UserID = Int32.Parse(user.Id),
+                    UserID = user.Id,
                     Name = model.Name,
                     Patronymic = model.Patronymic,
                     Surname = model.Surname,
@@ -84,11 +85,18 @@ namespace VolunteersClub.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
 
+            }
+            else
+            {
+                Console.WriteLine("Ошибка");
             }
             return View(model);
         }
