@@ -1,82 +1,85 @@
 ﻿@model VolunteersClub.Models.RegistrationVolunteer
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Регистрация волонтёра";
 }
 
-<h1>Create</h1>
+<h1 style="text-align: center;">Регистрация волонтёра</h1>
 
-<h4>Volunteer</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="row justify-content-center">
+    <form asp-action="Create" class="row">
+        <div class="col-md-6 order-md-2">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Patronymic" class="control-label"></label>
-                <input asp-for="Patronymic" class="form-control" />
-                <span asp-validation-for="Patronymic" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Surname" class="control-label"></label>
-                <input asp-for="Surname" class="form-control" />
-                <span asp-validation-for="Surname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" class="form-control" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EventTypeID" class="control-label"></label>
-                <input asp-for="EventTypeID" class="form-control" />
+            <div class="form-group col-md-12">
+                <label asp-for="EventTypeID" class="control-label">Тип мероприятия</label>
+                <select asp-for="EventTypeID" class="form-control" asp-items="ViewBag.EventTypes"></select>
                 <span asp-validation-for="EventTypeID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="VolunteerStatusID" class="control-label"></label>
-                <input asp-for="VolunteerStatusID" class="form-control" />
+            <div class="form-group col-md-12">
+                <label asp-for="VolunteerStatusID" class="control-label">Статус волонтёра</label>
+                <select asp-for="VolunteerStatusID" class="form-control" asp-items="ViewBag.Statuses"></select>
                 <span asp-validation-for="VolunteerStatusID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="VK" class="control-label"></label>
+            <div class="form-group col-md-12">
+                <label asp-for="VK" class="control-label">VK</label>
                 <input asp-for="VK" class="form-control" />
                 <span asp-validation-for="VK" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Telegram" class="control-label"></label>
+            <div class="form-group col-md-12">
+                <label asp-for="Telegram" class="control-label">Telegram</label>
                 <input asp-for="Telegram" class="form-control" />
                 <span asp-validation-for="Telegram" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+        </div>
+
+        <div class="col-md-6 order-md-1">
+            <div class="form-group col-md-12">
+                <label asp-for="Surname" class="control-label">Фамилия</label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-12">
+                <label asp-for="Name" class="control-label">Имя</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-12">
+                <label asp-for="Patronymic" class="control-label">Отчество</label>
+                <input asp-for="Patronymic" class="form-control" />
+                <span asp-validation-for="Patronymic" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-12">
+                <label asp-for="BirthDate" class="control-label">Дата рождения</label>
+                <input asp-for="BirthDate" class="form-control" type="date" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-12 order-md-3">
+            <div class="form-group col-md-6 mx-auto">
+                <label asp-for="Email" class="control-label">Почта</label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
+            <div class="form-group col-md-6 mx-auto">
+                <label asp-for="Password" class="control-label">Пароль</label>
                 <input asp-for="Password" class="form-control" type="password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
+            <div class="form-group col-md-6 mx-auto">
+                <label asp-for="ConfirmPassword" class="control-label">Подтверждение пароля</label>
                 <input asp-for="ConfirmPassword" class="form-control" type="password" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div style="text-align: center;" class="col-md-12 mt-4">
+                <input type="submit" value="Создать" class="btn btn-primary" />
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div style="text-align: center;">
+    <a asp-action="Index">Вернуться к списку</a>
 </div>
 
 @section Scripts {
@@ -84,4 +87,6 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+
 

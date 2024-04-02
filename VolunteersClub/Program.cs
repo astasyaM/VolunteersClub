@@ -51,8 +51,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -74,14 +72,7 @@ using (var scope = app.Services.CreateScope())
     dbContext.SaveChanges();
     dbContext.Database.EnsureCreated();
     dbContext.Database.Migrate();
-
 }
-
-
-
-
-//создание ролей
-
 
 if (!app.Environment.IsDevelopment())
 {

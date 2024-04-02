@@ -59,6 +59,14 @@ namespace VolunteersClub.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RegistrationLeader model)
         {
+            if (model.BirthDate.Year < 1924 || model.BirthDate.Year > 2009)
+            {
+                ModelState.AddModelError("BirthDate", "Введите корректную дату рождения");
+            }
+            if (model.Confirm!="БольшоеДоброеДело")
+            {
+                ModelState.AddModelError("Confirm", "Неправильный ключ подтверждения");
+            }
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,35 @@ namespace VolunteersClub.Controllers
         // GET: Volunteers/Create
         public IActionResult Create()
         {
+            ViewBag.EventTypes = GetEventTypeSelectList();
+            ViewBag.Statuses = GetStatusSelectList();
             return View();
+        }
+
+        public IEnumerable<SelectListItem> GetEventTypeSelectList()
+        {
+            return _context.EventTypes
+                .Select(e => new SelectListItem { Value = e.EventTypeID.ToString(), Text = e.EventTypeName })
+                .ToList();
+        }
+
+        public string GetStatusName(int statusID)
+        {
+            var status = _context.VolunteerStatuses.Find(statusID);
+            return status?.Status;
+        }
+
+        public IEnumerable<SelectListItem> GetStatusSelectList()
+        {
+            return _context.VolunteerStatuses
+                .Select(e => new SelectListItem { Value = e.VolunteerStatusID.ToString(), Text = e.Status })
+                .ToList();
+        }
+
+        public string GetEventTypeName(int eventTypeId)
+        {
+            var eventType = _context.EventTypes.Find(eventTypeId);
+            return eventType?.EventTypeName;
         }
 
         // POST: Volunteers/Create
@@ -60,6 +89,24 @@ namespace VolunteersClub.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RegistrationVolunteer model)
         {
+
+            string vkPattern = @"^(https?:\/\/)?(www\.)?vk\.com\/\w+$";
+            string telegramPattern = @"^@([A-Za-z0-9_]{1,15})$";
+
+            // Проверяем, соответствует ли ввод пользователя шаблону ссылки VK или имени пользователя Telegram
+            if (!string.IsNullOrEmpty(model.VK) && !Regex.IsMatch(model.VK, vkPattern))
+            {
+                ModelState.AddModelError("VK", "Введите корректную ссылку на VK в формате 'https://vk.com'");
+            }
+            if (!string.IsNullOrEmpty(model.Telegram) && !Regex.IsMatch(model.Telegram, telegramPattern))
+            {
+                ModelState.AddModelError("Telegram", "Введите корректное имя пользователя Telegram (начинается с @)");
+            }
+            if (model.BirthDate.Year < 1924 || model.BirthDate.Year > 2009)
+            {
+                ModelState.AddModelError("BirthDate", "Введите корректную дату рождения");
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
@@ -93,10 +140,6 @@ namespace VolunteersClub.Controllers
                     }
                 }
 
-            }
-            else
-            {
-                Console.WriteLine("Ошибка");
             }
             return View(model);
         }
