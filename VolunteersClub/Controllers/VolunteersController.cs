@@ -145,18 +145,21 @@ namespace VolunteersClub.Controllers
         }
 
         // GET: Volunteers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var volunteer = await _context.Volunteers.FindAsync(id);
+            var volunteer = await _context.Volunteers
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (volunteer == null)
             {
                 return NotFound();
             }
+            ViewBag.EventTypes = GetEventTypeSelectList();
+            ViewBag.Statuses = GetStatusSelectList();
             return View(volunteer);
         }
 
