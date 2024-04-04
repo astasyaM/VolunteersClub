@@ -31,7 +31,7 @@ namespace VolunteersClub.Controllers
         }
 
         // GET: Volunteers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -39,7 +39,7 @@ namespace VolunteersClub.Controllers
             }
 
             var volunteer = await _context.Volunteers
-                .FirstOrDefaultAsync(m => m.VolunteerID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (volunteer == null)
             {
                 return NotFound();
