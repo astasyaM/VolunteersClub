@@ -1,23 +1,26 @@
 ﻿@model VolunteersClub.Models.LoginModel
 
-<h1>Вход</h1>
-
 <form asp-action="Login" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
-
-    <div class="form-group">
-        <label asp-for="Email">Email:</label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Password">Пароль:</label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Войти</button>
+    <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
+        <div class="card shadow border-start-primary" style="width: 400px;">
+            <div class="card-body">
+                <h1 class="text-center">Вход</h1>
+                <div class="form-group">
+                    <label asp-for="Email">Email:</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Password">Пароль:</label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
+

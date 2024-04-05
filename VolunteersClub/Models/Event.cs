@@ -14,6 +14,7 @@ namespace VolunteersClub.Models
         public int VolunteersNumber { get; set; }
         [ForeignKey("EventTypeID")]
         public int EventTypeID { get; set; }
+        public virtual EventType EventType { get; set; }
         public string Adress {  get; set; }
         public string EventDescription {  get; set; }
         public string Image { get; set;  }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using MySqlX.XDevAPI.Common;
 using VolunteersClub.Data;
 using VolunteersClub.Models;
+using System.Drawing;
 
 namespace VolunteersClub.Controllers
 {
@@ -44,6 +46,111 @@ namespace VolunteersClub.Controllers
             {
                 return NotFound();
             }
+
+            var currentDate = DateTime.Today;
+
+            var pastEvents = await _context.Events
+                .Where(p => p.EventDate.Year < currentDate.Year || 
+                p.EventDate.Year==currentDate.Year && p.EventDate.Month < currentDate.Month || 
+                p.EventDate.Year == currentDate.Year && p.EventDate.Month == currentDate.Month && p.EventDate.Day < currentDate.Day)
+                .Select(p => p.EventID)
+                .ToListAsync();
+
+            var regularEventsCount = await _context.Participants
+                .Where(p => p.VolunteerID == volunteer.VolunteerID && 
+                p.ResponsibilityID==1 &&
+                p.ConfirmedLeader==true &&
+                p.ConfirmedVolunteer==true &&
+                pastEvents.Contains(p.EventID))
+                .Select(p => p.EventID)
+                .Distinct()
+                .CountAsync();
+
+            var listRegularEventsCount = await _context.Participants
+                .Where(p => p.VolunteerID == volunteer.VolunteerID &&
+                p.ResponsibilityID == 1 &&
+                p.ConfirmedLeader == true &&
+                p.ConfirmedVolunteer == true &&
+                pastEvents.Contains(p.EventID))
+                .Select(p => p.RecordID)
+                .ToListAsync();
+
+            var specialEventsCount = await _context.Participants
+                .Where(p => p.VolunteerID == volunteer.VolunteerID &&
+                p.ResponsibilityID == 2 &&
+                p.ConfirmedLeader == true &&
+                p.ConfirmedVolunteer == true &&
+                pastEvents.Contains(p.EventID))
+                .Select(p => p.EventID)
+                .Distinct()
+                .CountAsync();
+
+            var listSpecialEventsCount = await _context.Participants
+                .Where(p => p.VolunteerID == volunteer.VolunteerID &&
+                p.ResponsibilityID == 2 &&
+                p.ConfirmedLeader == true &&
+                p.ConfirmedVolunteer == true &&
+                pastEvents.Contains(p.EventID))
+                .Select(p => p.RecordID)
+                .ToListAsync();
+
+            var listRegularMarks = await _context.Marks
+                .Where(m => listRegularEventsCount.Contains(m.ActivityRecordID))
+                .ToListAsync();
+
+            var listSpecialMarks = await _context.Marks
+                .Where(m => listSpecialEventsCount.Contains(m.ActivityRecordID))
+                .ToListAsync();
+
+            var averageRatingRegular = listRegularMarks.Any() ? listRegularMarks.Average(m => m.CurrentMark) : 0;
+            var averageRatingSpecial = listSpecialMarks.Any() ? listSpecialMarks.Average(m => m.CurrentMark) : 0;
+
+            // Получаем общее количество мероприятий, в которых участвовал волонтёр
+            int totalEventsCount = regularEventsCount + specialEventsCount;
+
+            var allEvents = await _context.Participants
+                .Where(p => p.VolunteerID == volunteer.VolunteerID &&
+                p.ConfirmedLeader == true &&
+                p.ConfirmedVolunteer == true)
+                .Select(p => p.EventID)
+                .ToListAsync();
+
+            var futureEvents = await _context.Events
+                .Where(p => (p.EventDate.Year > currentDate.Year ||
+                p.EventDate.Year == currentDate.Year && p.EventDate.Month > currentDate.Month ||
+                p.EventDate.Year == currentDate.Year && p.EventDate.Month == currentDate.Month && p.EventDate.Day > currentDate.Day) &&
+                allEvents.Contains(p.EventID))
+                .Select(g => new
+                {
+                    Name = _context.Events.FirstOrDefault(t => t.EventID == g.EventID).EventName,
+                    Date = g.EventDate,
+                    Time = g.StartTime,
+                    Address = g.Adress
+                })
+                .ToListAsync();
+
+            // Получаем данные о количестве мероприятий каждого типа
+            var eventTypesData = await _context.Events
+                .Where(e => allEvents.Contains(e.EventID) &&
+                pastEvents.Contains(e.EventID)) 
+                .GroupBy(e => e.EventTypeID) 
+                .Select(g => new
+                {
+                    Type = _context.EventTypes.FirstOrDefault(t=>t.EventTypeID==g.Key).EventTypeName,
+                    Count = g.Count(),
+                    Percentage = Math.Round(((double)g.Count() / totalEventsCount) * 100, 2),
+                    PercentageString = (Math.Round(((double)g.Count() / totalEventsCount) * 100, 2)).ToString()+"%",
+                    Color = "#0d144a"
+                })
+                .ToListAsync();
+
+            ViewBag.FutureEvents = futureEvents;
+            ViewBag.EventTypesData = eventTypesData;
+            ViewBag.CurrentVolunteer = volunteer;
+            ViewBag.RegularEventsCount = regularEventsCount;
+            ViewBag.SpecialEventsCount = specialEventsCount;
+            ViewBag.AverageRatingRegular = averageRatingRegular;
+            ViewBag.AverageRatingSpecial = averageRatingSpecial;
 
             return View(volunteer);
         }

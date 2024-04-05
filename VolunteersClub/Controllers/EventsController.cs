@@ -25,6 +25,12 @@ namespace VolunteersClub.Controllers
             return View(await _context.Events.ToListAsync());
         }
 
+        // GET: Events
+        public async Task<IActionResult> IndexVolunteers(string eventType, string sortBy)
+        {
+            return View(await _context.Events.ToListAsync());
+        }
+
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {

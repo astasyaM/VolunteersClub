@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VolunteersClub.Models.Mark>
+﻿@model IEnumerable<VolunteersClub.Models.MarkWithEventViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,39 +9,22 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivityRecordID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CurrentMark)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActivityRecordID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentMark)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MarkID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MarkID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MarkID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                <h5 class="card-title"><a href="@Url.Action("Details", "Events", new { id = item.EventID })">@item.EventName</a></h5>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-text">@item.CurrentMark</h3>
+                    <p class="card-text">@item.Notes</p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.MarkID">Подробнее...</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

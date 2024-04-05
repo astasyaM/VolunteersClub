@@ -15,6 +15,7 @@ namespace VolunteersClub.Models
         public DateOnly BirthDate {  get; set; }
         [ForeignKey("EventTypeID")]
         public int EventTypeID { get; set; }
+        public virtual EventType EventType { get; set; }
         [ForeignKey("VolunteerStatusID")]
         public int VolunteerStatusID {  get; set; }
         public virtual VolunteerStatus VolunteerStatus { get; set; }

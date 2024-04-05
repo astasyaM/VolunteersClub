@@ -20,10 +20,45 @@ namespace VolunteersClub.Controllers
         }
 
         // GET: Marks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
-            return View(await _context.Marks.ToListAsync());
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var volunteer = await _context.Volunteers
+                .FirstOrDefaultAsync(m => m.UserID == id);
+            if (volunteer == null)
+            {
+                return NotFound();
+            }
+
+            // Предполагаем, что в таблице Participants есть столбец EventID, связывающий с Events
+            var showMarks = await _context.Marks
+                .Join(_context.Participants, // Присоединяем Participants
+                      mark => mark.ActivityRecordID,
+                      participant => participant.RecordID,
+                      (mark, participant) => new { Mark = mark, Participant = participant })
+                .Join(_context.Events, // Присоединяем Events
+                      markAndParticipant => markAndParticipant.Participant.EventID,
+                      eventEntity => eventEntity.EventID,
+                      (markAndParticipant, eventEntity) => new { markAndParticipant.Mark, markAndParticipant.Participant, Event = eventEntity })
+                .Where(x => x.Participant.VolunteerID == volunteer.VolunteerID) // Фильтр по ID волонтёра
+                .Select(x => new MarkWithEventViewModel // Предполагается, что у вас есть такая ViewModel
+                {
+                    MarkID = x.Mark.MarkID,
+                    CurrentMark = x.Mark.CurrentMark,
+                    Notes = x.Mark.Notes,
+                    EventName = x.Event.EventName, // Имя мероприятия
+                    EventID = x.Event.EventID
+                })
+                .ToListAsync();
+
+            // Возвращаем список мероприятий с оценками
+            return View(showMarks);
         }
+
 
         // GET: Marks/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -33,14 +68,30 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
-            var mark = await _context.Marks
-                .FirstOrDefaultAsync(m => m.MarkID == id);
-            if (mark == null)
+            var markWithEvent = await _context.Marks
+                .Where(m => m.MarkID == id) // Фильтруем Marks по ID
+                .Join(_context.Participants, // Присоединяем Participants
+                      mark => mark.ActivityRecordID,
+                      participant => participant.RecordID,
+                      (mark, participant) => new { Mark = mark, Participant = participant })
+                .Join(_context.Events, // Присоединяем Events
+                      markAndParticipant => markAndParticipant.Participant.EventID,
+                      eventEntity => eventEntity.EventID,
+                      (markAndParticipant, eventEntity) => new MarkWithEventViewModel // Создаём экземпляр ViewModel
+                      {
+                          MarkID = markAndParticipant.Mark.MarkID,
+                          CurrentMark = markAndParticipant.Mark.CurrentMark,
+                          Notes = markAndParticipant.Mark.Notes,
+                          EventName = eventEntity.EventName // Предполагается, что у вас поле называется Name
+                      })
+                .FirstOrDefaultAsync();
+
+            if (markWithEvent == null)
             {
                 return NotFound();
             }
 
-            return View(mark);
+            return View(markWithEvent);
         }
 
         // GET: Marks/Create

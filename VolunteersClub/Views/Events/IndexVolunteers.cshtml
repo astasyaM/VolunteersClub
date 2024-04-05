@@ -1,0 +1,29 @@
+﻿@model IEnumerable<VolunteersClub.Models.Event>
+
+@{
+    ViewData["Title"] = "Мероприятия Волонтёрского центра НИУ ВШЭ-Пермь";
+}
+
+<h1>Мероприятия Волонтёрского центра НИУ ВШЭ-Пермь</h1>
+
+<div class="row" style="display: flex; flex-wrap: wrap;">
+    @foreach (var item in Model)
+    {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100"> <!-- Добавляем класс h-100 для заполнения всей доступной высоты -->
+                    <img src="@item.Image" class="card-img-top mx-auto mt-3" alt="Event Image" style="max-width: 75%;">
+                    <div class="card-body" style="height: 200px; overflow: hidden;">
+                        <h5 class="card-title font-weight-bold">@item.EventName</h5>
+                        <p class="card-text">@item.EventDescription</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group d-flex justify-content-between" role="group" aria-label="Event Actions">
+                            <a asp-action="Edit" asp-route-id="@item.EventID" class="btn btn-primary">Подать заявку</a>
+                            <a asp-action="Details" asp-route-id="@item.EventID" class="btn btn-info">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
+</div>
+

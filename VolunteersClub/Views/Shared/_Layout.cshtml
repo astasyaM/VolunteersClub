@@ -21,37 +21,90 @@
                 {
                     @if (await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Leader"))
                     {
-                        <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Navbar">
-                            <div class="container-fluid">
-                                <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
-                                  <a class="navbar-brand col-lg-3 me-0" href="@Url.Action("Index", "Home")">
-                                      <img src="https://i.imgur.com/ENVbi6G.jpeg" alt="Логотип" style="height: 50px;">
-                                  </a>
-                                  <ul class="navbar-nav col-lg-6 justify-content-lg-center">
-                                    <li class="nav-item">
-                                      <a class="nav-link active" aria-current="page" href="#">Home</a>
-                                    </li>
-                                    <li class="nav-item">
-                                      <a class="nav-link" href="#">Link</a>
-                                    </li>
-                                    <li class="nav-item">
-                                      <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
-                                      <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                      </ul>
-                                    </li>
-                                  </ul>
-                                  <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-                                    <button class="btn btn-primary">Button</button>
-                                  </div>
-                                </div>
-                            </div>
-                        </nav>
+                                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                                    <div class="container-fluid">
+                                        <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                                        <h1 style="margin-top: 7px;margin-left: 14px;">Личный кабинет руководителя</h1>
+                                        <ul class="navbar-nav flex-nowrap ms-auto">
+                                            <li class="nav-item dropdown d-sm-none no-arrow">
+                                                <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
+                                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                                    <form class="me-auto navbar-search w-100">
+                                                        <div class="input-group">
+                                                            <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </li>
+                                            <li class="nav-item dropdown no-arrow mx-1">
+                                                <div class="nav-item dropdown no-arrow">
+                                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="padding-left: 0px;padding-right: 0px;"><span class="badge bg-danger badge-counter">2</span><i class="fas fa-bell fa-fw"></i></a>
+                                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                                            <div class="me-3">
+                                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
+                                                            </div>
+                                                            <div>
+                                                                <span class="small text-gray-500">22.02.2024</span>
+                                                                <p>Заявка одобрена!</p>
+                                                            </div>
+                                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                                            <div class="me-3">
+                                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
+                                                            </div>
+                                                            <div>
+                                                                <span class="small text-gray-500">12.02.2024</span>
+                                                                <p>Приглашение на мероприятие!</p>
+                                                            </div>
+                                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                                            <div class="me-3">
+                                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
+                                                            </div>
+
+                                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="nav-item dropdown no-arrow mx-1">
+                                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
+                                            </li>
+                                            <div class="d-none d-sm-block topbar-divider"></div>
+                                            <li class="nav-item dropdown no-arrow">
+                                                <div class="nav-item dropdown no-arrow">
+                                                            <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="padding-left: 22px;margin-left: 4px;"><span class="d-none d-lg-inline me-2 text-gray-600 small">@User.Identity.Name</span><img class="border rounded-circle img-profile" src="https://i.imgur.com/W9ldwXK.png" width="50px" height="50px"></a>
+                                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                                        <a class="dropdown-item" href="@Url.Action("Details", "Volunteers", new {id = @UserManager.GetUserId(User)})"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Личный кабинет</a>
+                                                        <a class="dropdown-item" href="@Url.Action("Edit", "Volunteers", new {id = @UserManager.GetUserId(User)})"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Редактировать профиль</a>
+                                                        <a class="dropdown-item" href="@Url.Action("IndexVolunteers", "Events")"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Мероприятия</a>
+                                                        <a class="dropdown-item" href="@Url.Action("Index", "Marks", new {id = @UserManager.GetUserId(User)})"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Отчётность</a>
+                                                        <a class="dropdown-item" href="@Url.Action("Index", "Marks", new {id = @UserManager.GetUserId(User)})"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Волонтёры</a>
+                                                        <a href="#" id="logoutBtn" class="dropdown-item" style="color: red;"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Выход</a>
+                                                                <script>
+                                                                document.getElementById('logoutBtn').addEventListener('click', function(event) {
+                                                                    event.preventDefault();
+
+                                                                    fetch('@Url.Action("Logout", "Login")', {
+                                                                        method: 'POST'
+                                                                    })
+                                                                    .then(response => {
+                                                                        if (response.ok) {
+                                                                            // Обработка успешного выхода
+                                                                            window.location.href = '@Url.Action("Index", "Home")'; // перенаправление на главную страницу
+                                                                        } else {
+                                                                            // Обработка ошибки
+                                                                            console.error('Ошибка выхода:', response.statusText);
+                                                                        }
+                                                                    })
+                                                                    .catch(error => console.error('Ошибка при выполнении запроса:', error));
+                                                                });
+                                                                </script>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </nav>
                     }
                     else
                     {
@@ -108,9 +161,10 @@
                                         <div class="nav-item dropdown no-arrow">
                                             <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#" style="padding-left: 22px;margin-left: 4px;"><span class="d-none d-lg-inline me-2 text-gray-600 small">@User.Identity.Name</span><img class="border rounded-circle img-profile" src="https://i.imgur.com/Tlp8KNh.png" width="50px" height="50px"></a>
                                             <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                                                <a class="dropdown-item" href="@Url.Action("Edit", "Volunteers", new {id = @UserManager.GetUserId(User)})"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Редактировать профиль</a>
-                                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Мероприятия</a>
-                                                <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Обратная связь</a>
+                                                <a class="dropdown-item" href="@Url.Action("Details", "Volunteers", new {id = @UserManager.GetUserId(User)})"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Личный кабинет</a>
+                                                <a class="dropdown-item" href="@Url.Action("Edit", "Volunteers", new {id = @UserManager.GetUserId(User)})"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Редактировать профиль</a>
+                                                        <a class="dropdown-item" href="@Url.Action("IndexVolunteers", "Events")"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Мероприятия</a>
+                                                <a class="dropdown-item" href="@Url.Action("Index", "Marks", new {id = @UserManager.GetUserId(User)})"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Обратная связь</a>
                                                 <a href="#" id="logoutBtn" class="dropdown-item" style="color: red;"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Выход</a>
                                                         <script>
                                                         document.getElementById('logoutBtn').addEventListener('click', function(event) {

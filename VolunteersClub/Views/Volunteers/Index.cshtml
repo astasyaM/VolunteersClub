@@ -6,78 +6,26 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Patronymic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Surname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTypeID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VolunteerStatusID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VK)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telegram)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patronymic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.EventTypeID)
-            </td>
-            <td>
-                    @Html.DisplayFor(modelItem => item.VolunteerStatusID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VK)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telegram)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.VolunteerID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.VolunteerID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.VolunteerID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    @foreach (var item in Model)
+    {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="https://i.imgur.com/wZd9fI7.png" class="card-img-top" alt="Volunteer Image">
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name) @Html.DisplayFor(modelItem => item.Patronymic) @Html.DisplayFor(modelItem => item.Surname)</h5>
+                        <p class="card-text">Дата рождения: @Html.DisplayFor(modelItem => item.BirthDate)</p>
+                        <p class="card-text">Тип мероприятия: @Html.DisplayFor(modelItem => item.EventTypeID)</p>
+                        <p class="card-text">Статус волонтёра: @Html.DisplayFor(modelItem => item.VolunteerStatusID)</p>
+                        <p class="card-text">VK: @Html.DisplayFor(modelItem => item.VK)</p>
+                        <p class="card-text">Telegram: @Html.DisplayFor(modelItem => item.Telegram)</p>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-action="Edit" asp-route-id="@item.VolunteerID" class="btn btn-primary">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.VolunteerID" class="btn btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.VolunteerID" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+    }
+</div>
