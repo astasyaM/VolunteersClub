@@ -53,7 +53,7 @@
 </script>
 
 <div class="slider-container">
-    <h2>Confirmed Volunteers</h2>
+    <h2>Поступившие заявки</h2>
     <div class="slider">
         @foreach (var volunteer in ViewBag.ConfirmedVolunteers)
         {
@@ -66,16 +66,16 @@
                     <p>@volunteer.BirthDate.ToShortDateString()</p>
                     <p>@volunteer.VK</p>
                     <p>@volunteer.Telegram</p>
-                        <button class="approve-btn" data-participant-id="@volunteer.RecordID">Approve Request</button>
+                        <button class="approve-btn" data-participant-id="@volunteer.RecordID">Одобрить заявку</button>
                 </div>
         }
     </div>
-    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Previous</button>
-    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Next</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Назад</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Вперёд</button>
 </div>
 
 <div class="slider-container">
-    <h2>Confirmed Leader</h2>
+    <h2>Отправленные приглашения</h2>
     <div class="slider">
         @foreach (var volunteer in ViewBag.ConfirmedLeader)
         {
@@ -91,12 +91,12 @@
                     </div>
         }
     </div>
-    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Previous</button>
-    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Next</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Назад</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Вперёд</button>
 </div>
 
 <div class="slider-container">
-    <h2>Confirmed Both</h2>
+    <h2>Утверждённые участники</h2>
     <div class="slider">
         @foreach (var volunteer in ViewBag.ConfirmedBoth)
         {
@@ -112,12 +112,12 @@
                         </div>
         }
     </div>
-    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Previous</button>
-    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Next</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Назад</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Вперёд</button>
 </div>
 
 <div class="slider-container">
-    <h2>Non-Participants</h2>
+    <h2>Список волонтёров</h2>
     <div class="slider">
         @foreach (var volunteer in ViewBag.NonParticipants)
         {
@@ -133,8 +133,8 @@
                 </div>
         }
     </div>
-    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Previous</button>
-    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Next</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'prev')">Назад</button>
+    <button class="slider-btn" onclick="shiftSlider(this.parentElement, 'next')">Вперёд</button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

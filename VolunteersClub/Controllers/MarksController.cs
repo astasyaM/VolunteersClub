@@ -59,6 +59,39 @@ namespace VolunteersClub.Controllers
             return View(showMarks);
         }
 
+        public async Task<IActionResult> IndexEvent(int id)
+        {
+            var currentEvent = await _context.Events
+                .FirstOrDefaultAsync(m => m.EventID == id);
+            if (currentEvent == null)
+            {
+                return NotFound();
+            }
+
+            var showMarks = await _context.Marks
+                .Join(_context.Participants, // Присоединяем Participants
+                      mark => mark.ActivityRecordID,
+                      participant => participant.RecordID,
+                      (mark, participant) => new { Mark = mark, Participant = participant })
+                .Join(_context.Volunteers, // Присоединяем Events
+                      markAndParticipant => markAndParticipant.Participant.VolunteerID,
+                      volunteerEntity => volunteerEntity.VolunteerID,
+                      (markAndParticipant, volunteerEntity) => new { markAndParticipant.Mark, markAndParticipant.Participant, Volunteer = volunteerEntity })
+                .Where(x => x.Participant.EventID == currentEvent.EventID) // Фильтр по ID волонтёра
+                .Select(x => new MarksWithVolunteerModel // Предполагается, что у вас есть такая ViewModel
+                {
+                    MarkID = x.Mark.MarkID,
+                    CurrentMark = x.Mark.CurrentMark,
+                    Notes = x.Mark.Notes,
+                    VolunteerName = x.Volunteer.Name,
+                    VolunteerSurname = x.Volunteer.Surname,
+                    VolunteerID = x.Volunteer.UserID
+                })
+                .ToListAsync();
+
+            // Возвращаем список мероприятий с оценками
+            return View(showMarks);
+        }
 
         // GET: Marks/Details/5
         public async Task<IActionResult> Details(int? id)

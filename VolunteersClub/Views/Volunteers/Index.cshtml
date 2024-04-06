@@ -4,28 +4,29 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Наши волонтёры</h1>
 
 <div class="row">
     @foreach (var item in Model)
     {
             <div class="col-md-4 mb-4">
-                <div class="card h-100">
+                <div class="card h-100 shadow rounded">
                     <img src="https://i.imgur.com/wZd9fI7.png" class="card-img-top" alt="Volunteer Image">
                     <div class="card-body">
-                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name) @Html.DisplayFor(modelItem => item.Patronymic) @Html.DisplayFor(modelItem => item.Surname)</h5>
-                        <p class="card-text">Дата рождения: @Html.DisplayFor(modelItem => item.BirthDate)</p>
-                        <p class="card-text">Тип мероприятия: @Html.DisplayFor(modelItem => item.EventTypeID)</p>
-                        <p class="card-text">Статус волонтёра: @Html.DisplayFor(modelItem => item.VolunteerStatusID)</p>
-                        <p class="card-text">VK: @Html.DisplayFor(modelItem => item.VK)</p>
-                        <p class="card-text">Telegram: @Html.DisplayFor(modelItem => item.Telegram)</p>
+                        <h5 class="card-title mb-2">@Html.DisplayFor(modelItem => item.Name) @Html.DisplayFor(modelItem => item.Patronymic) @Html.DisplayFor(modelItem => item.Surname)</h5>
+                        <p class="card-text mb-1">Дата рождения: @Html.DisplayFor(modelItem => item.BirthDate)</p>
+                        <p class="card-text mb-1">Тип мероприятия: @Html.DisplayFor(modelItem => item.EventType.EventTypeName)</p>
+                        <p class="card-text mb-1">Статус волонтёра: @Html.DisplayFor(modelItem => item.VolunteerStatus.Status)</p>
+                        <p class="card-text mb-1">VK: @Html.DisplayFor(modelItem => item.VK)</p>
+                        <p class="card-text mb-1">Telegram: @Html.DisplayFor(modelItem => item.Telegram)</p>
                     </div>
-                    <div class="card-footer">
-                        <a asp-action="Edit" asp-route-id="@item.VolunteerID" class="btn btn-primary">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.VolunteerID" class="btn btn-info">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.VolunteerID" class="btn btn-danger">Delete</a>
+                    <div class="card-footer d-flex justify-content-center">
+                        <a asp-action="Details" asp-route-id="@item.UserID" class="btn btn-info">Подробная статистика</a>
                     </div>
                 </div>
             </div>
     }
 </div>
+
+
+

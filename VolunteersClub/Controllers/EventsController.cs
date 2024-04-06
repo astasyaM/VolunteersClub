@@ -26,6 +26,19 @@ namespace VolunteersClub.Controllers
         }
 
         // GET: Events
+        public async Task<IActionResult> IndexMarks()
+        {
+            var currentDate = DateTime.Today;
+
+            var pastEvents = await _context.Events
+                .Where(p => p.EventDate.Year < currentDate.Year ||
+                p.EventDate.Year == currentDate.Year && p.EventDate.Month < currentDate.Month ||
+                p.EventDate.Year == currentDate.Year && p.EventDate.Month == currentDate.Month && p.EventDate.Day < currentDate.Day)
+                .ToListAsync();
+            return View(pastEvents);
+        }
+
+        // GET: Events
         public async Task<IActionResult> IndexVolunteers(string eventType, string sortBy)
         {
             return View(await _context.Events.ToListAsync());

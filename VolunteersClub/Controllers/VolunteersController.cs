@@ -29,7 +29,11 @@ namespace VolunteersClub.Controllers
         // GET: Volunteers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Volunteers.ToListAsync());
+            var volunteers = await _context.Volunteers
+                .Include(v => v.EventType) // Загружаем связанный тип мероприятия
+                .Include(v => v.VolunteerStatus) // Загружаем связанный статус волонтёра
+                .ToListAsync();
+            return View(volunteers);
         }
 
         // GET: Volunteers/Details/5

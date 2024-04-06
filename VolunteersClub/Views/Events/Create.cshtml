@@ -4,56 +4,55 @@
     ViewData["Title"] = "Create";
 }
 
-<h1 class="text-center">Create</h1>
+<h1 class="text-center">Создание мероприятия</h1>
 
-<h4>Event</h4>
 <hr />
 <div class="row">
     <div class="col-md-4 mx-auto text-center">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="EventName" class="control-label"></label>
+                <label asp-for="EventName" class="control-label">Название мероприятия</label>
                 <input asp-for="EventName" class="form-control" />
                 <span asp-validation-for="EventName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EventDate" class="control-label"></label>
+                <label asp-for="EventDate" class="control-label">Дата проведения</label>
                 <input asp-for="EventDate" class="form-control" type="date" />
                 <span asp-validation-for="EventDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
+                <label asp-for="StartTime" class="control-label">Начало мероприятия</label>
                 <input asp-for="StartTime" class="form-control" type="time" />
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Duration" class="control-label"></label>
+                <label asp-for="Duration" class="control-label">Длительность мероприятия</label>
                 <input asp-for="Duration" class="form-control" />
                 <span asp-validation-for="Duration" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VolunteersNumber" class="control-label"></label>
+                <label asp-for="VolunteersNumber" class="control-label">Количество волонтёров</label>
                 <input asp-for="VolunteersNumber" class="form-control" />
                 <span asp-validation-for="VolunteersNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EventTypeID" class="control-label"></label>
+                <label asp-for="EventTypeID" class="control-label">Вид мероприятия</label>
                 <select asp-for="EventTypeID" class="form-control" asp-items="ViewBag.EventTypes"></select>
                 <span asp-validation-for="EventTypeID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Adress" class="control-label"></label>
+                <label asp-for="Adress" class="control-label">Адрес проведения</label>
                 <input asp-for="Adress" class="form-control" />
                 <span asp-validation-for="Adress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EventDescription" class="control-label"></label>
+                <label asp-for="EventDescription" class="control-label">Описание мероприятия</label>
                 <textarea asp-for="EventDescription" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="EventDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
+                <label asp-for="Image" class="control-label">Плакат</label>
                 <input asp-for="Image" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>

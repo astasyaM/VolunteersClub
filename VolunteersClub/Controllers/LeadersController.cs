@@ -29,7 +29,7 @@ namespace VolunteersClub.Controllers
         }
 
         // GET: Leaders/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
@@ -37,7 +37,7 @@ namespace VolunteersClub.Controllers
             }
 
             var leader = await _context.Leaders
-                .FirstOrDefaultAsync(m => m.LeaderID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (leader == null)
             {
                 return NotFound();
@@ -97,14 +97,15 @@ namespace VolunteersClub.Controllers
         }
 
         // GET: Leaders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var leader = await _context.Leaders.FindAsync(id);
+            var leader = await _context.Leaders
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (leader == null)
             {
                 return NotFound();

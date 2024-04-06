@@ -14,9 +14,9 @@
     @foreach (var item in Model)
     {
             <div class="col-md-4 mb-4">
-                <div class="card">
+                <div class="card h-100">
                     <img src="@item.Image" class="card-img-top mx-auto mt-3" alt="Event Image" style="max-width: 75%;">
-                    <div class="card-body">
+                    <div class="card-body" style="height: 200px; overflow: hidden;">
                         <h5 class="card-title font-weight-bold">@item.EventName</h5>
                         <p class="card-text">@item.EventDescription</p>
                     </div>
@@ -27,7 +27,7 @@
                             <a asp-action="Delete" asp-route-id="@item.EventID" class="btn btn-danger">Удалить</a>
                         </div>
                         <div class="text-center mt-2">
-                            <a asp-action="TeamFormation" asp-route-id="@item.EventID" class="btn btn-secondary">Формирование команды</a>
+                            <a asp-controller="Participants" asp-action="Index" asp-route-id="@item.EventID" class="btn btn-secondary">Формирование команды</a>
                         </div>
                     </div>
                 </div>

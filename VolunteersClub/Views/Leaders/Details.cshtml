@@ -4,45 +4,14 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="container mt-5">
+    <div class="row justify-content-start">
+        <div class="col-md-6">
+           <a asp-controller="Events" asp-action="Create" class="btn btn-primary btn-lg shadow-lg d-flex justify-content-center align-items-center position-relative" style="width: 300px; height: 300px;">
+                <img src="https://i.imgur.com/UPIQLuB.png" alt="Create Event" style="width: 70%; height: 70%;">
+                <div class="position-absolute bottom-0 start-0 text-center" style="background-color: rgba(0,0,0,0.5); width: 100%; color: white;">Создать новое мероприятие</div>
+            </a>
+        </div>
+    </div>
+</div>
 
-<div>
-    <h4>Leader</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patronymic)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patronymic)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BirthDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BirthDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.LeaderID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
