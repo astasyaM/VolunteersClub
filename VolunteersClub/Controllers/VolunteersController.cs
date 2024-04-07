@@ -36,6 +36,43 @@ namespace VolunteersClub.Controllers
             return View(volunteers);
         }
 
+        public async Task<IActionResult> IndexForMarks(int id)
+        {
+            var listVolunteers = await _context.Participants
+                .Where(m => m.EventID == id)
+                .Select(m => m.VolunteerID)
+                .ToListAsync();
+
+            var volunteers = await _context.Volunteers
+                .Include(v => v.EventType) 
+                .Include(v => v.VolunteerStatus)
+                .Join(_context.Participants,
+                      volunteer => volunteer.VolunteerID,
+                      participant => participant.VolunteerID, 
+                      (volunteer, participant) => new { Volunteer = volunteer, Participant = participant })
+
+                .Where(x => listVolunteers.Contains(x.Participant.VolunteerID) && x.Participant.EventID==id)
+                .Select(x => new VolunteersForMarks
+                {
+                    RecordID = x.Participant.RecordID, 
+                    BirthDate = x.Volunteer.BirthDate,
+                    VolunteerID = x.Volunteer.VolunteerID,
+                    EventType = x.Volunteer.EventType,
+                    EventTypeID = x.Volunteer.EventTypeID,
+                    Surname = x.Volunteer.Surname,
+                    Name = x.Volunteer.Name,
+                    Patronymic = x.Volunteer.Patronymic,
+                    Telegram = x.Volunteer.Telegram,
+                    UserID = x.Volunteer.UserID,
+                    VK = x.Volunteer.VK,
+                    VolunteerStatus = x.Volunteer.VolunteerStatus,
+                    VolunteerStatusID = x.Volunteer.VolunteerStatusID
+                })
+                .ToListAsync();
+
+            return View(volunteers);
+        }
+
         // GET: Volunteers/Details/5
         public async Task<IActionResult> Details(string? id)
         {

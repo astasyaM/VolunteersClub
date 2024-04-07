@@ -73,12 +73,12 @@ namespace VolunteersClub.Controllers
                       mark => mark.ActivityRecordID,
                       participant => participant.RecordID,
                       (mark, participant) => new { Mark = mark, Participant = participant })
-                .Join(_context.Volunteers, // Присоединяем Events
+                .Join(_context.Volunteers, 
                       markAndParticipant => markAndParticipant.Participant.VolunteerID,
                       volunteerEntity => volunteerEntity.VolunteerID,
                       (markAndParticipant, volunteerEntity) => new { markAndParticipant.Mark, markAndParticipant.Participant, Volunteer = volunteerEntity })
-                .Where(x => x.Participant.EventID == currentEvent.EventID) // Фильтр по ID волонтёра
-                .Select(x => new MarksWithVolunteerModel // Предполагается, что у вас есть такая ViewModel
+                .Where(x => x.Participant.EventID == currentEvent.EventID) 
+                .Select(x => new MarksWithVolunteerModel
                 {
                     MarkID = x.Mark.MarkID,
                     CurrentMark = x.Mark.CurrentMark,
@@ -115,7 +115,7 @@ namespace VolunteersClub.Controllers
                           MarkID = markAndParticipant.Mark.MarkID,
                           CurrentMark = markAndParticipant.Mark.CurrentMark,
                           Notes = markAndParticipant.Mark.Notes,
-                          EventName = eventEntity.EventName // Предполагается, что у вас поле называется Name
+                          EventName = eventEntity.EventName 
                       })
                 .FirstOrDefaultAsync();
 
@@ -128,8 +128,9 @@ namespace VolunteersClub.Controllers
         }
 
         // GET: Marks/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
+            ViewBag.ID = id;
             return View();
         }
 
@@ -138,7 +139,7 @@ namespace VolunteersClub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MarkID,ActivityRecordID,CurrentMark,Note")] Mark mark)
+        public async Task<IActionResult> Create([Bind("ActivityRecordID, CurrentMark, Note")] Mark mark)
         {
             if (ModelState.IsValid)
             {

@@ -30,19 +30,21 @@ namespace VolunteersClub.Controllers
             public DateOnly BirthDate {  get; set; }
             public string VK {  get; set; }
             public string Telegram { get; set; }
+            public string UserID { get; set; }
         }
 
 
         // GET: Participants
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
             var participants = _context.Participants.ToList();
 
             var confirmedVolunteer = _context.Participants
-                .Where(p => p.ConfirmedVolunteer && !p.ConfirmedLeader)
+                .Where(p => p.ConfirmedVolunteer && !p.ConfirmedLeader && p.EventID==id)
                 .Include(p => p.Volunteer)  // Включаем данные о волонтёре
                 .Select(p => new ConfirmedVolunteerViewModel
                 {
+                    UserID = p.Volunteer.UserID,
                     RecordID = p.RecordID,
                     VolunteerId = p.VolunteerID,
                     Surname = p.Volunteer.Surname,
@@ -55,14 +57,14 @@ namespace VolunteersClub.Controllers
                     
                 })
                 .ToList();
-
             ViewBag.ConfirmedVolunteers = confirmedVolunteer;
 
             var confirmedLeader = _context.Participants
-                .Where(p => p.ConfirmedLeader && !p.ConfirmedVolunteer)
+                .Where(p => p.ConfirmedLeader && !p.ConfirmedVolunteer && p.EventID == id)
                 .Include(p => p.Volunteer)  // Включаем данные о волонтёре
                 .Select(p => new ConfirmedVolunteerViewModel
                 {
+                    UserID = p.Volunteer.UserID,
                     RecordID = p.RecordID,
                     VolunteerId = p.VolunteerID,
                     Surname = p.Volunteer.Surname,
@@ -75,14 +77,14 @@ namespace VolunteersClub.Controllers
 
                 })
                 .ToList();
-
             ViewBag.ConfirmedLeader = confirmedLeader;
 
             var confirmedBoth = _context.Participants
-                .Where(p => p.ConfirmedVolunteer & p.ConfirmedLeader)
+                .Where(p => p.ConfirmedVolunteer & p.ConfirmedLeader && p.EventID == id)
                 .Include(p => p.Volunteer)  // Включаем данные о волонтёре
                 .Select(p => new ConfirmedVolunteerViewModel
                 {
+                    UserID = p.Volunteer.UserID,
                     RecordID = p.RecordID,
                     VolunteerId = p.VolunteerID,
                     Surname = p.Volunteer.Surname,
@@ -95,13 +97,14 @@ namespace VolunteersClub.Controllers
 
                 })
                 .ToList();
-
             ViewBag.ConfirmedBoth = confirmedBoth;
+
             var nonParticipants = _context.Volunteers
-                .Where(v => !_context.Participants.Any(p => p.VolunteerID == v.VolunteerID))
+                .Where(v => !_context.Participants.Any(p => p.VolunteerID == v.VolunteerID && p.EventID == id))
                 .Include(v => v.VolunteerStatus)  // Включаем данные о статусе волонтёра
                 .Select(v => new ConfirmedVolunteerViewModel
                 {
+                    UserID = v.UserID,
                     VolunteerId = v.VolunteerID,
                     Surname = v.Surname,
                     Name = v.Name,
@@ -112,9 +115,9 @@ namespace VolunteersClub.Controllers
                     Telegram = v.Telegram
                 })
                 .ToList();
-
             ViewBag.NonParticipants = nonParticipants;
 
+            ViewBag.EventID = id;
             return View(participants);
         }
 
@@ -142,6 +145,81 @@ namespace VolunteersClub.Controllers
                     // Возвращаем ошибку, если участник не найден
                     return Json(new { success = false, error = "Participant not found" });
                 }
+            }
+            catch (Exception ex)
+            {
+                // Возвращаем ошибку в случае исключения
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult DeclineRequest(int participantId)
+        {
+            try
+            {
+                // Находим участника по ID
+                var participant = _context.Participants.Find(participantId);
+
+                if (participant != null)
+                {
+                    if (participant.ConfirmedVolunteer==true)
+                    {
+                        // Обновляем поле ConfirmedLeader
+                        participant.ConfirmedLeader = false;
+
+                        // Сохраняем изменения в базе данных
+                        _context.SaveChanges();
+
+                        // Возвращаем успешный результат
+                        return Json(new { success = true });
+                    }
+                    else
+                    {
+                        // Удаляем участника из контекста
+                        _context.Participants.Remove(participant);
+
+                        // Сохраняем изменения в базе данных
+                        _context.SaveChanges();
+
+                        // Возвращаем успешный результат
+                        return Json(new { success = true });
+                    }
+                }
+                else
+                {
+                    // Возвращаем ошибку, если участник не найден
+                    return Json(new { success = false, error = "Participant not found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Возвращаем ошибку в случае исключения
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult MakeRequest(int eventId, int volunteerId)
+        {
+            try
+            {
+                var participant = new Participant {
+                    EventID = eventId,
+                    VolunteerID = volunteerId,
+                    ConfirmedLeader = true,
+                    ConfirmedVolunteer = false,
+                    ResponsibilityID = 1
+                };
+
+                _context.Add(participant);
+                _context.SaveChanges();
+
+                // Сохраняем изменения в базе данных
+                _context.SaveChanges();
+
+                // Возвращаем успешный результат
+                return Json(new { success = true });
             }
             catch (Exception ex)
             {

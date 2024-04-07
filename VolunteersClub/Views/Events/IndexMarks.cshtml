@@ -18,7 +18,7 @@
                         </div>
                         <div class="card-footer">
                             <div class="btn-group d-flex justify-content-between" role="group" aria-label="Event Actions">
-                                <a asp-action="Edit" asp-route-id="@item.EventID" class="btn btn-primary">Формирование обратной связи</a>
+                                <a asp-controller="Volunteers" asp-action="IndexForMarks" asp-route-id="@item.EventID" class="btn btn-primary">Формирование обратной связи</a>
                                 <a asp-controller="Marks" asp-action="IndexEvent" asp-route-id="@item.EventID" class="btn btn-info">Оценки</a>
                             </div>
                         </div>

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<VolunteersClub.Models.VolunteersForMarks>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Участники мероприятия</h1>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow rounded">
+                        <img src="https://i.imgur.com/wZd9fI7.png" class="card-img-top" alt="Volunteer Image">
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">@Html.DisplayFor(modelItem => item.Name) @Html.DisplayFor(modelItem => item.Patronymic) @Html.DisplayFor(modelItem => item.Surname)</h5>
+                            <p class="card-text mb-1">Дата рождения: @Html.DisplayFor(modelItem => item.BirthDate)</p>
+                            <p class="card-text mb-1">Тип мероприятия: @Html.DisplayFor(modelItem => item.EventType.EventTypeName)</p>
+                            <p class="card-text mb-1">Статус волонтёра: @Html.DisplayFor(modelItem => item.VolunteerStatus.Status)</p>
+                            <p class="card-text mb-1">VK: @Html.DisplayFor(modelItem => item.VK)</p>
+                            <p class="card-text mb-1">Telegram: @Html.DisplayFor(modelItem => item.Telegram)</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-center">
+                            <a asp-controller="Marks" asp-action="Create" asp-route-id="@item.RecordID" class="btn btn-info">Оценивание</a>
+                        </div>
+                    </div>
+                </div>
+    }
+</div>
