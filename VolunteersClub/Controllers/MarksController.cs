@@ -34,6 +34,7 @@ namespace VolunteersClub.Controllers
                 return NotFound();
             }
 
+            
             // Предполагаем, что в таблице Participants есть столбец EventID, связывающий с Events
             var showMarks = await _context.Marks
                 .Join(_context.Participants, // Присоединяем Participants
@@ -54,7 +55,7 @@ namespace VolunteersClub.Controllers
                     EventID = x.Event.EventID
                 })
                 .ToListAsync();
-
+            ViewBag.VId = volunteer.VolunteerID;
             // Возвращаем список мероприятий с оценками
             return View(showMarks);
         }

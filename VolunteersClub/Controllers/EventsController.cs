@@ -38,6 +38,29 @@ namespace VolunteersClub.Controllers
             return View(pastEvents);
         }
 
+        public async Task<IActionResult> IndexMarksVolunteers(int volunteerId)
+        {
+            var currentDate = DateTime.Today;
+
+            var pastEvents = await _context.Events
+                .Where(p => p.EventDate.Year < currentDate.Year ||
+                p.EventDate.Year == currentDate.Year && p.EventDate.Month < currentDate.Month ||
+                p.EventDate.Year == currentDate.Year && p.EventDate.Month == currentDate.Month && p.EventDate.Day < currentDate.Day)
+                .Select(p => p.EventID)
+                .ToListAsync();
+
+            var eventsToChoose = await _context.Participants
+                .Where(p => pastEvents.Contains(p.EventID) && p.VolunteerID==volunteerId && p.ResponsibilityID==2)
+                .Select (p => p.EventID)
+                .ToListAsync();
+
+            var showEvents = await _context.Events
+                .Where(p => eventsToChoose.Contains(p.EventID))
+                .ToListAsync();
+
+            return View(showEvents);
+        }
+
         // GET: Events
         public async Task<IActionResult> IndexVolunteers(string volunteerId, int? eventType, DateTime? startDate, DateTime? endDate)
         {

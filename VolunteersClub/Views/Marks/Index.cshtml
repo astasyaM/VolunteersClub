@@ -5,21 +5,28 @@
 }
 
 <div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header">
-                <h5 class="card-title"><a href="@Url.Action("Details", "Events", new { id = item.EventID })">@item.EventName</a></h5>
+    <div class="col-md-12 mb-4">
+        <a class="btn btn-primary" href="@Url.Action("IndexMarksVolunteers", "Events", new {volunteerId = @ViewBag.VId})">Ответственный за проведение мероприятий</a>
+    </div>
+    <div class="col-md-12">
+        @foreach (var item in Model)
+        {
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title"><a href="@Url.Action("Details", "Events", new { id = item.EventID })">@item.EventName</a></h5>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-text">@item.CurrentMark</h3>
+                            <p class="card-text">@item.Notes</p>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.MarkID">Подробнее...</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h3 class="card-text">@item.CurrentMark</h3>
-                    <p class="card-text">@item.Notes</p>
-                </div>
-                <div class="card-footer">
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.MarkID">Подробнее...</a>
-                </div>
-            </div>
-        </div>
-    }
+        }
+    </div>
 </div>
+
+
