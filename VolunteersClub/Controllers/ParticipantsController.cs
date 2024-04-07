@@ -39,6 +39,26 @@ namespace VolunteersClub.Controllers
         {
             var participants = _context.Participants.ToList();
 
+            var mains = _context.Participants
+                .Where(p => p.ConfirmedVolunteer && p.ConfirmedLeader && p.EventID == id && p.ResponsibilityID==2)
+                .Include(p => p.Volunteer)  // Включаем данные о волонтёре
+                .Select(p => new ConfirmedVolunteerViewModel
+                {
+                    UserID = p.Volunteer.UserID,
+                    RecordID = p.RecordID,
+                    VolunteerId = p.VolunteerID,
+                    Surname = p.Volunteer.Surname,
+                    Name = p.Volunteer.Name,
+                    Patronymic = p.Volunteer.Patronymic,
+                    Status = p.Volunteer.VolunteerStatus.Status,
+                    BirthDate = p.Volunteer.BirthDate,
+                    VK = p.Volunteer.VK,
+                    Telegram = p.Volunteer.Telegram
+
+                })
+                .ToList();
+            ViewBag.Mains = mains;
+
             var confirmedVolunteer = _context.Participants
                 .Where(p => p.ConfirmedVolunteer && !p.ConfirmedLeader && p.EventID==id)
                 .Include(p => p.Volunteer)  // Включаем данные о волонтёре
@@ -80,7 +100,7 @@ namespace VolunteersClub.Controllers
             ViewBag.ConfirmedLeader = confirmedLeader;
 
             var confirmedBoth = _context.Participants
-                .Where(p => p.ConfirmedVolunteer & p.ConfirmedLeader && p.EventID == id)
+                .Where(p => p.ConfirmedVolunteer & p.ConfirmedLeader && p.EventID == id && p.ResponsibilityID==1)
                 .Include(p => p.Volunteer)  // Включаем данные о волонтёре
                 .Select(p => new ConfirmedVolunteerViewModel
                 {
@@ -133,6 +153,70 @@ namespace VolunteersClub.Controllers
                 {
                     // Обновляем поле ConfirmedLeader
                     participant.ConfirmedLeader = true;
+
+                    // Сохраняем изменения в базе данных
+                    _context.SaveChanges();
+
+                    // Возвращаем успешный результат
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    // Возвращаем ошибку, если участник не найден
+                    return Json(new { success = false, error = "Participant not found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Возвращаем ошибку в случае исключения
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult MakeMain(int participantId)
+        {
+            try
+            {
+                // Находим участника по ID
+                var participant = _context.Participants.Find(participantId);
+
+                if (participant != null)
+                {
+                    // Обновляем поле ConfirmedLeader
+                    participant.ResponsibilityID = 2;
+
+                    // Сохраняем изменения в базе данных
+                    _context.SaveChanges();
+
+                    // Возвращаем успешный результат
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    // Возвращаем ошибку, если участник не найден
+                    return Json(new { success = false, error = "Participant not found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Возвращаем ошибку в случае исключения
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public IActionResult MakeRegular(int participantId)
+        {
+            try
+            {
+                // Находим участника по ID
+                var participant = _context.Participants.Find(participantId);
+
+                if (participant != null)
+                {
+                    // Обновляем поле ConfirmedLeader
+                    participant.ResponsibilityID = 1;
 
                     // Сохраняем изменения в базе данных
                     _context.SaveChanges();

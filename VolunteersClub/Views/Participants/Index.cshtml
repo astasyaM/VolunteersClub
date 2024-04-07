@@ -2,6 +2,32 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+<div class="slider-container">
+    <h2>Ответственные за проведение мероприятия</h2>
+        <div class="row">
+        @foreach (var volunteer in ViewBag.Mains)
+        {
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100 shadow rounded">
+                                    <img src="https://i.imgur.com/wZd9fI7.png" class="card-img-top" alt="Volunteer Image">
+                                    <div class="card-body">
+                                        <p>@volunteer.Surname</p>
+                                        <p>@volunteer.Name</p>
+                                        <p>@volunteer.Patronymic</p>
+                                        <p>@volunteer.Status</p>
+                                        <p>@volunteer.BirthDate.ToShortDateString()</p>
+                                        <p>@volunteer.VK</p>
+                                        <p>@volunteer.Telegram</p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-center">
+                                        <a asp-controller="Volunteers" asp-action="Details" asp-route-id="@volunteer.UserID" class="btn btn-info">Подробная статистика</a>
+                                        <button class="btn btn-danger regular-btn" data-participant-id="@volunteer.RecordID">Отозвать роль</button>
+                                    </div>
+                                </div>
+                            </div>
+        }
+    </div>
+</div>
 
 <div class="slider-container">
     <h2>Поступившие заявки</h2>
@@ -76,8 +102,9 @@
                                             <p>@volunteer.Telegram</p>
                                         </div>
                                         <div class="card-footer d-flex justify-content-center">
-                                                <a asp-controller="Volunteers" asp-action="Details" asp-route-id="@volunteer.UserID" class="btn btn-info">Подробная статистика</a>
+                                            <a asp-controller="Volunteers" asp-action="Details" asp-route-id="@volunteer.UserID" class="btn btn-info">Подробная статистика</a>
                                             <button class="btn btn-danger decline-btn" data-participant-id="@volunteer.RecordID">Отозвать приглашение</button>
+                                            <button class="btn btn-success main-btn" data-participant-id="@volunteer.RecordID">Сделать ответственным</button>
                                         </div>
                                     </div>
                                 </div>
@@ -152,6 +179,36 @@
 
             // Отправляем AJAX-запрос на сервер для отвергания заявки
             $.post('/Participants/MakeRequest', { eventId: eventId, volunteerId: volunteerId }, function (result) {
+                if (result.success) {
+                    // Обновляем содержимое слайдера
+                    // Можно выполнить перезагрузку страницы или другие действия по вашему выбору
+                    location.reload();
+                } else {
+                    // Обработка ошибки
+                    alert('Error: ' + result.error);
+                }
+            });
+        });
+        $('.main-btn').click(function () {
+            var participantId = $(this).data('participant-id');
+
+            // Отправляем AJAX-запрос на сервер для отвергания заявки
+            $.post('/Participants/MakeMain', { participantId: participantId }, function (result) {
+                if (result.success) {
+                    // Обновляем содержимое слайдера
+                    // Можно выполнить перезагрузку страницы или другие действия по вашему выбору
+                    location.reload();
+                } else {
+                    // Обработка ошибки
+                    alert('Error: ' + result.error);
+                }
+            });
+        });
+        $('.regular-btn').click(function () {
+            var participantId = $(this).data('participant-id');
+
+            // Отправляем AJAX-запрос на сервер для отвергания заявки
+            $.post('/Participants/MakeRegular', { participantId: participantId }, function (result) {
                 if (result.success) {
                     // Обновляем содержимое слайдера
                     // Можно выполнить перезагрузку страницы или другие действия по вашему выбору

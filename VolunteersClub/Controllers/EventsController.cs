@@ -39,9 +39,74 @@ namespace VolunteersClub.Controllers
         }
 
         // GET: Events
-        public async Task<IActionResult> IndexVolunteers(string eventType, string sortBy)
+        public async Task<IActionResult> IndexVolunteers(string volunteerId, int? eventType, DateTime? startDate, DateTime? endDate)
         {
-            return View(await _context.Events.ToListAsync());
+            ViewBag.Id = volunteerId;
+
+            var query = _context.Events.AsQueryable();
+
+            // Применяем фильтр по типу мероприятия, если выбрано
+            if (eventType.HasValue && eventType != 0)
+            {
+                query = query.Where(e => e.EventTypeID == eventType);
+            }
+
+            // Применяем фильтр по дате начала, если указана
+            if (startDate.HasValue)
+            {
+                query = query.Where(p => p.EventDate.Year < endDate.Value.Year ||
+                p.EventDate.Year == endDate.Value.Year && p.EventDate.Month < endDate.Value.Month ||
+                p.EventDate.Year == endDate.Value.Year && p.EventDate.Month == endDate.Value.Month && p.EventDate.Day < endDate.Value.Day);
+            }
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(p => p.EventDate.Year > startDate.Value.Year ||
+                p.EventDate.Year == startDate.Value.Year && p.EventDate.Month > startDate.Value.Month ||
+                p.EventDate.Year == startDate.Value.Year && p.EventDate.Month == startDate.Value.Month && p.EventDate.Day > startDate.Value.Day);
+            }
+
+            var events = query.ToList();
+            var eventTypes = _context.EventTypes.ToList();
+
+            var viewModel = new ViewEventForVolunteers
+            {
+                Events = events,
+                EventTypes = eventTypes
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult MakeRequest(int eventId, string volunteerId)
+        {
+            try
+            {
+                var volunteerUser = _context.Volunteers.FirstOrDefault(m => m.UserID == volunteerId);
+
+                if (volunteerUser != null)
+                {
+                    var participant = new Participant
+                    {
+                        EventID = eventId,
+                        VolunteerID = volunteerUser.VolunteerID,
+                        ConfirmedLeader = false,
+                        ConfirmedVolunteer = true,
+                        ResponsibilityID = 1
+                    };
+                    _context.Add(participant);
+                    _context.SaveChanges();
+                }
+
+                // Возвращаем успешный результат
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // Возвращаем ошибку в случае исключения
+                return Json(new { success = false, error = ex.Message });
+            }
         }
 
         // GET: Events/Details/5

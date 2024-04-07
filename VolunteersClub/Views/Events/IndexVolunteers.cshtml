@@ -1,13 +1,35 @@
-﻿@model IEnumerable<VolunteersClub.Models.Event>
+﻿@model VolunteersClub.Models.ViewEventForVolunteers
 
 @{
     ViewData["Title"] = "Мероприятия Волонтёрского центра НИУ ВШЭ-Пермь";
 }
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <h1>Мероприятия Волонтёрского центра НИУ ВШЭ-Пермь</h1>
 
+<form method="get">
+    <label for="eventType">Тип мероприятия:</label>
+    <select id="eventType" name="eventType">
+        <option value="">Все типы</option>
+        @foreach (var type in Model.EventTypes)
+        {
+            <option value="@type.EventTypeID">@type.EventTypeName</option>
+        }
+    </select>
+
+    <label for="startDate">Начало периода:</label>
+    <input type="date" id="startDate" name="startDate">
+
+    <label for="endDate">Конец периода:</label>
+    <input type="date" id="endDate" name="endDate">
+
+    <button type="submit">Применить фильтр</button>
+</form>
+
+
 <div class="row" style="display: flex; flex-wrap: wrap;">
-    @foreach (var item in Model)
+    @foreach (var item in Model.Events)
     {
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
@@ -18,7 +40,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="btn-group d-flex justify-content-between" role="group" aria-label="Event Actions">
-                            <a asp-action="Edit" asp-route-id="@item.EventID" class="btn btn-primary">Подать заявку</a>
+                            <button class="btn btn-primary make-btn" data-event-id="@ViewBag.EventID" data-volunteer-id="@ViewBag.Id">Отправить заявку</button>
                             <a asp-action="Details" asp-route-id="@item.EventID" class="btn btn-info">Подробнее</a>
                         </div>
                     </div>
@@ -27,3 +49,28 @@
     }
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.make-btn').click(function () {
+            var eventId = $(this).data('event-id');
+            var volunteerId = $(this).data('volunteer-id');
+            var button = $(this);
+
+            // Отправляем AJAX-запрос на сервер для отправки приглашения
+            $.post('/Events/MakeRequest', { eventId: eventId, volunteerId: volunteerId }, function (result) {
+                if (result.success) {
+
+                } else {
+                    // Обработка ошибки
+                    alert('Error: ' + result.error);
+                }
+            });
+
+            // Делаем кнопку нерабочей
+            button.prop('disabled', true);
+            button.addClass('disabled');
+            button.addClass('btn-secondary'); // Добавляем серый цвет кнопке
+        });
+    });
+</script>
