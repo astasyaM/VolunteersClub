@@ -143,8 +143,8 @@ namespace VolunteersClub.Controllers
                 .Where(m => listSpecialEventsCount.Contains(m.ActivityRecordID))
                 .ToListAsync();
 
-            var averageRatingRegular = listRegularMarks.Any() ? listRegularMarks.Average(m => m.CurrentMark) : 0;
-            var averageRatingSpecial = listSpecialMarks.Any() ? listSpecialMarks.Average(m => m.CurrentMark) : 0;
+            var averageRatingRegular = Math.Round(listRegularMarks.Any() ? listRegularMarks.Average(m => m.CurrentMark) : 0, 2);
+            var averageRatingSpecial = Math.Round(listSpecialMarks.Any() ? listSpecialMarks.Average(m => m.CurrentMark) : 0, 2);
 
             // Получаем общее количество мероприятий, в которых участвовал волонтёр
             int totalEventsCount = regularEventsCount + specialEventsCount;

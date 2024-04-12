@@ -35,28 +35,28 @@ namespace VolunteersClub.Controllers
             }
 
             
-            // Предполагаем, что в таблице Participants есть столбец EventID, связывающий с Events
             var showMarks = await _context.Marks
-                .Join(_context.Participants, // Присоединяем Participants
+                .Join(_context.Participants,
                       mark => mark.ActivityRecordID,
                       participant => participant.RecordID,
                       (mark, participant) => new { Mark = mark, Participant = participant })
-                .Join(_context.Events, // Присоединяем Events
+                .Join(_context.Events, 
                       markAndParticipant => markAndParticipant.Participant.EventID,
                       eventEntity => eventEntity.EventID,
-                      (markAndParticipant, eventEntity) => new { markAndParticipant.Mark, markAndParticipant.Participant, Event = eventEntity })
-                .Where(x => x.Participant.VolunteerID == volunteer.VolunteerID) // Фильтр по ID волонтёра
-                .Select(x => new MarkWithEventViewModel // Предполагается, что у вас есть такая ViewModel
+                      (markAndParticipant, eventEntity) => new { markAndParticipant.Mark, markAndParticipant.Participant, 
+                          Event = eventEntity })
+                .Where(x => x.Participant.VolunteerID == volunteer.VolunteerID) 
+                .Select(x => new MarkWithEventViewModel 
                 {
                     MarkID = x.Mark.MarkID,
                     CurrentMark = x.Mark.CurrentMark,
                     Notes = x.Mark.Notes,
-                    EventName = x.Event.EventName, // Имя мероприятия
+                    EventName = x.Event.EventName, 
                     EventID = x.Event.EventID
                 })
                 .ToListAsync();
             ViewBag.VId = volunteer.VolunteerID;
-            // Возвращаем список мероприятий с оценками
+
             return View(showMarks);
         }
 

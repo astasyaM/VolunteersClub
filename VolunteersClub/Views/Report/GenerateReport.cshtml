@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Составление отчёта о деятельности волонтёрского центра за период:";
+}
+
+<h1>Составление отчёта о деятельности волонтёрского центра за период:</h1>
+
+<form asp-controller="Report" asp-action="Generate" method="post">
+    <div class="form-group">
+        <label for="startDate">Начало периода:</label>
+        <input type="date" id="startDate" name="startDate" class="form-control" required>
+    </div>
+    <div class="form-group mb-3">
+        <label for="endDate">Конец периода:</label>
+        <input type="date" id="endDate" name="endDate" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary mb-3">Сохранить отчёт</button>
+    <div class="d-flex mb-3">
+        <a href="#" class="btn btn-secondary" onclick="history.back();return false;">Назад</a>
+    </div>
+</form>
+
+
