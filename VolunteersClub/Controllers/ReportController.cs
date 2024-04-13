@@ -145,7 +145,6 @@ namespace VolunteersClub.Controllers
                 .Where(e => topVolunteersID.Contains(e.VolunteerID))
                 .ToList();
 
-            // Создаем экземпляр пакета Excel
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             using (var package = new ExcelPackage())
             {
@@ -242,10 +241,8 @@ namespace VolunteersClub.Controllers
                 chartNew.Series.Add(worksheet.Cells["B" + (row - countRow) + ":B" + (row - 1)], worksheet.Cells["A" + (row - countRow) + ":A" + (row - 1)]);
                 chartNew.Title.Text = "Выполнение плана по кол-ву участников на мероприятие";
 
-                // Автоподгон ширины столбцов
                 worksheet.Cells.AutoFitColumns();
 
-                // Конвертация в массив байтов для возврата
                 return File(package.GetAsByteArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "report.xlsx");
             }
         }

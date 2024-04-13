@@ -70,7 +70,7 @@ namespace VolunteersClub.Controllers
             }
 
             var showMarks = await _context.Marks
-                .Join(_context.Participants, // Присоединяем Participants
+                .Join(_context.Participants, 
                       mark => mark.ActivityRecordID,
                       participant => participant.RecordID,
                       (mark, participant) => new { Mark = mark, Participant = participant })
@@ -111,7 +111,7 @@ namespace VolunteersClub.Controllers
                 .Join(_context.Events, // Присоединяем Events
                       markAndParticipant => markAndParticipant.Participant.EventID,
                       eventEntity => eventEntity.EventID,
-                      (markAndParticipant, eventEntity) => new MarkWithEventViewModel // Создаём экземпляр ViewModel
+                      (markAndParticipant, eventEntity) => new MarkWithEventViewModel 
                       {
                           MarkID = markAndParticipant.Mark.MarkID,
                           CurrentMark = markAndParticipant.Mark.CurrentMark,
@@ -136,8 +136,6 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: Marks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ActivityRecordID, CurrentMark, Note")] Mark mark)
@@ -168,8 +166,6 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: Marks/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("MarkID,ActivityRecordID,CurrentMark,Note")] Mark mark)

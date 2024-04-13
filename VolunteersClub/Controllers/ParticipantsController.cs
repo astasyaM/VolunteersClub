@@ -178,18 +178,14 @@ namespace VolunteersClub.Controllers
         {
             try
             {
-                // Находим участника по ID
                 var participant = _context.Participants.Find(participantId);
 
                 if (participant != null)
                 {
-                    // Обновляем поле ConfirmedLeader
                     participant.ResponsibilityID = 2;
 
-                    // Сохраняем изменения в базе данных
                     _context.SaveChanges();
 
-                    // Возвращаем успешный результат
                     return Json(new { success = true });
                 }
                 else
@@ -210,29 +206,23 @@ namespace VolunteersClub.Controllers
         {
             try
             {
-                // Находим участника по ID
                 var participant = _context.Participants.Find(participantId);
 
                 if (participant != null)
                 {
-                    // Обновляем поле ConfirmedLeader
                     participant.ResponsibilityID = 1;
 
-                    // Сохраняем изменения в базе данных
                     _context.SaveChanges();
 
-                    // Возвращаем успешный результат
                     return Json(new { success = true });
                 }
                 else
                 {
-                    // Возвращаем ошибку, если участник не найден
                     return Json(new { success = false, error = "Participant not found" });
                 }
             }
             catch (Exception ex)
             {
-                // Возвращаем ошибку в случае исключения
                 return Json(new { success = false, error = ex.Message });
             }
         }
@@ -242,43 +232,34 @@ namespace VolunteersClub.Controllers
         {
             try
             {
-                // Находим участника по ID
                 var participant = _context.Participants.Find(participantId);
 
                 if (participant != null)
                 {
                     if (participant.ConfirmedVolunteer==true)
                     {
-                        // Обновляем поле ConfirmedLeader
                         participant.ConfirmedLeader = false;
 
-                        // Сохраняем изменения в базе данных
                         _context.SaveChanges();
 
-                        // Возвращаем успешный результат
                         return Json(new { success = true });
                     }
                     else
                     {
-                        // Удаляем участника из контекста
                         _context.Participants.Remove(participant);
 
-                        // Сохраняем изменения в базе данных
                         _context.SaveChanges();
 
-                        // Возвращаем успешный результат
                         return Json(new { success = true });
                     }
                 }
                 else
                 {
-                    // Возвращаем ошибку, если участник не найден
                     return Json(new { success = false, error = "Participant not found" });
                 }
             }
             catch (Exception ex)
             {
-                // Возвращаем ошибку в случае исключения
                 return Json(new { success = false, error = ex.Message });
             }
         }
@@ -337,8 +318,6 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: Participants/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecordID,EventID,VolunteerID,ResponsibilityID,ConfirmedVolunteer,ConfirmedLeader")] Participant participant)
@@ -369,8 +348,6 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: Participants/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("RecordID,EventID,VolunteerID,ResponsibilityID,ConfirmedVolunteer,ConfirmedLeader")] Participant participant)

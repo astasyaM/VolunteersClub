@@ -15,11 +15,13 @@ namespace VolunteersClub.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public LeadersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public LeadersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: Leaders
@@ -53,8 +55,6 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: Leaders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RegistrationLeader model)
@@ -86,7 +86,10 @@ namespace VolunteersClub.Controllers
                     await _userManager.AddToRoleAsync(user, "Leader");
                     _context.Add(leader);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    // Переадресация на личный кабинет
+                    return RedirectToAction("Details", "Leaders", new { id = leader.UserID });
                 }
                 foreach (var error in result.Errors)
                 {
@@ -114,8 +117,6 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: Leaders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("LeaderID,UserID,Name,Surname,Patronymic,BirthDate")] Leader leader)

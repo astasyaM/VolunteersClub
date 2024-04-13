@@ -50,8 +50,6 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: VolunteerStatus/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("VolunteerStatusID,VolunteerStatusName")] VolunteerStatus volunteerStatus)
@@ -82,8 +80,6 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: VolunteerStatus/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("VolunteerStatusID,VolunteerStatusName")] VolunteerStatus volunteerStatus)

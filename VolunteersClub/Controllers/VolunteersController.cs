@@ -19,11 +19,13 @@ namespace VolunteersClub.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public VolunteersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public VolunteersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: Volunteers
@@ -231,13 +233,10 @@ namespace VolunteersClub.Controllers
         }
 
         // POST: Volunteers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RegistrationVolunteer model)
         {
-
             string vkPattern = @"^(https?:\/\/)?(www\.)?vk\.com\/\w+$";
             string telegramPattern = @"^@([A-Za-z0-9_]{1,15})$";
 
@@ -278,7 +277,10 @@ namespace VolunteersClub.Controllers
                     await _userManager.AddToRoleAsync(user, "Volunteer");
                     _context.Add(volunteer);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    // Переадресация на личный кабинет
+                    return RedirectToAction("Details", "Volunteers", new { id = volunteer.UserID });
                 }
                 else
                 {
@@ -289,7 +291,7 @@ namespace VolunteersClub.Controllers
                 }
 
             }
-            return View(model);
+            return View();
         }
 
         // GET: Volunteers/Edit/5
